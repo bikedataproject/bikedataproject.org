@@ -7,6 +7,22 @@
     import {appManager} from "$lib/AppManager";
 
     let {data}: PageProps = $props();
+
+
+    async function getWeather() {
+        const user = await appManager.authenticator.getUserIdOrRedirect();
+        if (user === null) return;
+
+        const response = await fetch("http://localhost:5292/weather", {
+            headers: {
+                Authorization: "Bearer " + user.access_token,
+            },
+        });
+
+        console.log(response);
+
+        return "the weather";
+    }
 </script>
 
 <PrivatePage>
@@ -23,11 +39,11 @@
     <Page>
         <div>
             something
-            {#await appManager.authenticator.getUserIdOrRedirect()}
+            {#await getWeather()}
                 <div>loading user</div>
-            {:then user}
+            {:then weather}
                 <div>
-                    {user?.profile.email}
+                    {weather}
                 </div>
             {/await}
         </div>
