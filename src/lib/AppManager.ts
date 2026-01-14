@@ -39,9 +39,10 @@ export class AppManager {
             response_type: "code",
             scope: this.settings.auth.scope,
             automaticSilentRenew: true,
-            monitorSession: false,
+            loadUserInfo: true,
+            monitorSession: true,
             userStore: new WebStorageStateStore({
-                prefix: "anyways",
+                prefix: "bdp",
                 store: window.localStorage,
             })
         });

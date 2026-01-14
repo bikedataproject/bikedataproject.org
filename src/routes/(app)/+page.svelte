@@ -4,11 +4,12 @@
     import Page from "$lib/layout/Page.svelte";
     import PrivatePage from "$lib/auth/PrivatePage.svelte";
     import type {PageProps} from "./$types";
+    import {appManager} from "$lib/AppManager";
 
     let {data}: PageProps = $props();
 </script>
 
-<Page>
+<PrivatePage>
     <Header>
         <div class="flex items-center gap-x-6">
             <HomeIcon class="size-7 text-dark my-3"/>
@@ -20,6 +21,15 @@
         </div>
     </Header>
     <Page>
-
+        <div>
+            something
+            {#await appManager.authenticator.getUserIdOrRedirect()}
+                <div>loading user</div>
+            {:then user}
+                <div>
+                    {user?.profile.email}
+                </div>
+            {/await}
+        </div>
     </Page>
-</Page>
+</PrivatePage>

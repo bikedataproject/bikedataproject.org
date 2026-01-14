@@ -1,4 +1,3 @@
-import type { UserData } from "@anyways-open/identity-api-client";
 import { Log, User, UserManager, type UserManagerSettings } from "oidc-client-ts";
 import {appManager} from "$lib/AppManager";
 
@@ -41,14 +40,15 @@ export class Authenticator {
         });
     }
 
-    async getUserIdOrRedirect(): Promise<string> {
+    async getUserIdOrRedirect(): Promise<User | undefined> {
         const user = await this.userManager.getUser();
+        console.log(user);
         if (user == null || user.expired) {
             await this.startSignin(window.location.toString());
-            return "";
+            return await this.userManager.getUser();
         }
 
-        return user.profile.sub;
+        return user;
     }
 
     async getAccessTokenOrRedirect(): Promise<string> {
@@ -95,21 +95,6 @@ export class Authenticator {
         }
 
         return undefined;
-    }
-
-    async trySilentSignin(): Promise<boolean> {
-        try {
-            let user = await this.getUser();
-    
-            if (!user || user.expired) {
-                user = await this.userManager.signinSilent();
-                return typeof user !== "undefined";
-            }
-    
-            return true;
-        } catch (e) {
-            return false;
-        }
     }
     
     async signinSilentCallback(): Promise<boolean> {

@@ -4,11 +4,6 @@ export class AppManagerSettings {
     public readonly public_url: string;
     public readonly root_url: string;
     public readonly auth: AuthSettings;
-    public readonly api_urls: ApiUrls;
-    public readonly profiles: string[];
-    public readonly api_keys: {
-        opencage: string
-    };
 
     constructor() {
         const url = new URL(settings.public_url);
@@ -19,10 +14,6 @@ export class AppManagerSettings {
         if (this.root_url.endsWith("/")) this.root_url = this.root_url.substring(0, this.root_url.length - 1);
 
         this.auth = new AuthSettings(settings.auth);
-        this.api_urls = new ApiUrls(settings.apis);
-        this.profiles = settings.profiles;
-
-        this.api_keys = settings.api_keys;
     }
 }
 
