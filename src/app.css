@@ -1,0 +1,95 @@
+@import 'tailwindcss';
+@import 'maplibre-gl/dist/maplibre-gl.css';
+
+@plugin '@tailwindcss/typography';
+
+@theme {
+    --color-primary: #ffc000;
+    --color-primary-lighter: #ffc61a;
+    --color-primary-darker: #e6ac00;
+    --color-primary-hover: #e6ac00;
+
+    --color-dark: #1b2a4e;
+    --color-dark-hover: #2e4885;
+    --color-light: #f4f7fb;
+    --color-light-hover: #dae4f1;
+    --color-beige: #F5F5DC;
+    --color-icon-light: #6a7282;
+
+    --color-editor-motorway: #CF2081;
+    --color-editor-trunk: #8cd05f;
+    --color-editor-primary: #F99806;
+    --color-editor-tertiary: #ffff7e;
+    --color-editor-secondary: rgb(243, 243, 18);
+    --color-editor-secondary-stroke: #70372f;
+    --color-editor-unclassified: rgb(221, 204, 170);
+    --color-editor-construction: "#FFFF00";
+
+    --radius-map: 0.25rem;
+    --shadow-map: 0 15px 15px rgba(0, 0, 0, 0.25);
+    --spacing-map-margin: 1rem;
+    --spacing-map-toolbox-margin: 22rem;
+
+    --map-z: 50;
+
+    --cursor-select-acting: url('/img/cursors/cursor-select-acting.png'), auto;
+    --cursor-select-line: url('/img/cursors/cursor-select-line.png'), auto;
+    --cursor-select-vertex: url('/img/cursors/cursor-select-vertex.png'), auto;
+    --cursor-select-split: url('/img/cursors/cursor-select-split.png'), auto;
+    --cursor-draw: url('/img/cursors/cursor-draw.png') 9 9, auto;
+    --cursor-draw-connect-line: url('/img/cursors/cursor-draw-connect-line.png') 9 9, auto;
+    --cursor-draw-connect-point: url('/img/cursors/cursor-draw-connect-point.png') 9 9, auto;
+}
+
+.maplibregl-canvas-container.maplibregl-interactive {
+    cursor: unset;
+}
+
+.maplibregl-popup-content {
+    padding: 0;
+}
+
+.preset-icon-container path.line.stroke {
+    stroke-width: 2;
+}
+
+.preset-icon-container path.line.casing {
+    stroke: #afafaf;
+    stroke-width: 4 !important;
+}
+
+.cycleway path.line.stroke {
+    stroke: #FFF;
+    stroke-dasharray: 6, 6;
+    stroke-width: 2 !important;
+}
+
+.cycleway path.line.casing {
+    stroke: #58a9ed;
+    stroke-dasharray: none;
+}
+
+.footway path.line.stroke {
+    stroke: #FFF;
+    stroke-dasharray: 6, 6;
+    stroke-width: 2 !important;
+}
+
+.footway path.line.casing {
+    stroke: #988;
+    stroke-dasharray: none;
+}
+.footway  {
+    color: #988;
+}
+
+.preset-icon-container-secondary path.line.casing {
+    stroke: #70372f;
+}
+
+.preset-icon-container circle.vertex {
+    fill: #fff;
+    stroke: rgba(0, 0, 0, 0.25);
+}
+
+

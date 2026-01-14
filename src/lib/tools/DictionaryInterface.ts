@@ -1,0 +1,1 @@
+export type DictionaryInterface<T> = { [name: string]: T };

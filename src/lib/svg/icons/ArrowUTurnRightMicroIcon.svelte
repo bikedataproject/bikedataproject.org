@@ -1,0 +1,11 @@
+<script lang="ts">
+    let className: string = "";
+    export {className as class};
+    export let style: string = "";
+</script>
+
+<svg
+        {style}
+        class={className} viewBox="0 0 16 16" fill="currentColor">
+    <path fill-rule="evenodd" d="M3.5 9.75A2.75 2.75 0 0 1 6.25 7h5.19L9.22 9.22a.75.75 0 1 0 1.06 1.06l3.5-3.5a.75.75 0 0 0 0-1.06l-3.5-3.5a.75.75 0 1 0-1.06 1.06l2.22 2.22H6.25a4.25 4.25 0 0 0 0 8.5h1a.75.75 0 0 0 0-1.5h-1A2.75 2.75 0 0 1 3.5 9.75Z" clip-rule="evenodd" />
+</svg>
