@@ -9,28 +9,18 @@
                 <div class="w-full sm:w-1/2">
                     <h4 class="text-lg font-bold mb-3 md:h-[100px] md:flex md:items-start">Connect your existing account</h4>
                     <div class="mt-1 mb-6">
-                        <p class="text-sm text-gray-500">Integration coming soon</p>
+                        <a href="/share-data" class="inline-block px-4 py-2 bg-primary text-white font-semibold rounded text-sm hover:bg-primary-hover transition-colors">
+                            Start sharing your data
+                        </a>
                     </div>
-                    <p>
-                        <strong>
-                            Connecting your account is temporarily not available, subscribe to our
-                            newsletter and we will inform you when we are back up and running or just
-                            visit us again later.
-                        </strong>
-                    </p>
                 </div>
                 <div class="w-full sm:w-1/2">
                     <h4 class="text-lg font-bold mb-3 md:h-[100px] md:flex md:items-start">Upload your data</h4>
                     <div class="mt-1 mb-6">
-                        <p class="text-sm text-gray-500">GPX upload coming soon</p>
+                        <a href="/share-data" class="inline-block px-4 py-2 bg-primary text-white font-semibold rounded text-sm hover:bg-primary-hover transition-colors">
+                            Start sharing your data
+                        </a>
                     </div>
-                    <p>
-                        <strong>
-                            Uploading your GPX tracks is temporarily not available, subscribe to our
-                            newsletter and we will inform you when we are back up and running or just
-                            visit us again later.
-                        </strong>
-                    </p>
                 </div>
             </div>
         </div>
