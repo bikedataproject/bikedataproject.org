@@ -5,28 +5,16 @@
         alt="" />
     <div class="flex flex-col-reverse md:flex-row gap-8 md:gap-12">
         <div class="w-full md:w-1/2">
-            <div class="flex flex-col sm:flex-row gap-6 md:gap-8">
-                <div class="w-full sm:w-1/2">
-                    <h4 class="text-lg font-bold mb-3 md:h-[100px] md:flex md:items-start">Connect your existing account</h4>
-                    <p class="text-sm text-gray-500 mb-4">
-                        Strava is currently unavailable — they limit our integration to a single user.
-                        Garmin API access is pending approval.
-                        For now, GPX upload is the only active option.
-                    </p>
-                    <div class="mt-1 mb-6">
-                        <a href="/share-data" class="inline-block px-4 py-2 bg-primary text-white font-semibold rounded text-sm hover:bg-primary-hover transition-colors">
-                            Start sharing your data
-                        </a>
-                    </div>
-                </div>
-                <div class="w-full sm:w-1/2">
-                    <h4 class="text-lg font-bold mb-3 md:h-[100px] md:flex md:items-start">Upload your data</h4>
-                    <div class="mt-1 mb-6">
-                        <a href="/share-data" class="inline-block px-4 py-2 bg-primary text-white font-semibold rounded text-sm hover:bg-primary-hover transition-colors">
-                            Start sharing your data
-                        </a>
-                    </div>
-                </div>
+            <div>
+                <h4 class="text-lg font-bold mb-3">Connect your account or upload your data</h4>
+                <p class="text-sm text-gray-500 mb-4">
+                    Strava is currently unavailable — they limit our integration to a single user.
+                    Garmin API access is pending approval.
+                    For now, GPX upload is the only active option.
+                </p>
+                <a href="/share-data" class="inline-block px-4 py-2 bg-primary text-white font-semibold rounded text-sm hover:bg-primary-hover transition-colors">
+                    Start sharing your data
+                </a>
             </div>
         </div>
         <div class="w-full md:w-1/2 relative">
