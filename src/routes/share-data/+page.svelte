@@ -7,46 +7,9 @@
     let gpxFiles: FileList | null = $state(null);
     let dragging = $state(false);
 
-    let garminUsername = $state("");
-    let garminPassword = $state("");
-    let garminStatus: "idle" | "loading" | "success" | "error" = $state("idle");
-    let garminError = $state("");
-
     function handleDrop(e: DragEvent) {
         dragging = false;
         gpxFiles = e.dataTransfer?.files ?? null;
-    }
-
-    async function linkGarmin() {
-        const user = await appManager.authenticator.getUserIdOrRedirect();
-        if (user === null) return;
-
-        garminStatus = "loading";
-        garminError = "";
-
-        try {
-            const response = await fetch(`${appManager.settings.public_url}/garmin/link`, {
-                method: "POST",
-                headers: {
-                    Authorization: "Bearer " + user.access_token,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ username: garminUsername, password: garminPassword }),
-            });
-
-            if (response.ok) {
-                garminStatus = "success";
-            } else if (response.status === 401) {
-                garminStatus = "error";
-                garminError = "Invalid Garmin credentials. Please check your username and password.";
-            } else {
-                garminStatus = "error";
-                garminError = "Something went wrong. Please try again.";
-            }
-        } catch {
-            garminStatus = "error";
-            garminError = "Network error. Please try again.";
-        }
     }
 
     async function linkStrava() {
@@ -98,46 +61,23 @@
                 </div>
 
                 <!-- Garmin -->
-                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6">
+                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6 opacity-60">
                     <div class="flex items-center gap-4">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect width="40" height="40" rx="8" fill="#006DB6"/>
                             <text x="20" y="27" text-anchor="middle" font-size="18" font-weight="bold" font-family="Arial, sans-serif" fill="white">G</text>
                         </svg>
-                        <h3 class="text-xl font-bold text-gray-800 m-0">Garmin</h3>
-                    </div>
-                    {#if garminStatus === "success"}
-                        <p class="text-green-600 text-sm font-semibold flex-1">
-                            Your Garmin account has been linked successfully!
-                        </p>
-                    {:else}
-                        <p class="text-gray-600 text-sm flex-1">
-                            Connect your Garmin Connect account to automatically sync your cycling activities with the Bike Data Project.
-                        </p>
-                        <div class="flex flex-col gap-3">
-                            <input
-                                type="text"
-                                placeholder="Garmin username or email"
-                                bind:value={garminUsername}
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#006DB6]"
-                            />
-                            <input
-                                type="password"
-                                placeholder="Password"
-                                bind:value={garminPassword}
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-[#006DB6]"
-                            />
-                            {#if garminStatus === "error"}
-                                <p class="text-red-500 text-xs">{garminError}</p>
-                            {/if}
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 m-0">Garmin</h3>
+                            <span class="text-xs font-semibold text-blue-500 uppercase tracking-wide">API access pending</span>
                         </div>
-                        <button
-                            onclick={linkGarmin}
-                            disabled={garminStatus === "loading" || !garminUsername || !garminPassword}
-                            class="w-full py-3 px-4 bg-[#006DB6] text-white font-semibold rounded-lg hover:bg-[#005a9e] transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
-                            {garminStatus === "loading" ? "Linking..." : "Link your Garmin account"}
-                        </button>
-                    {/if}
+                    </div>
+                    <p class="text-gray-600 text-sm flex-1">
+                        We have applied for access to the official Garmin Health API but have not yet been accepted. We'll enable this integration as soon as we get access.
+                    </p>
+                    <button disabled class="w-full py-3 px-4 bg-[#006DB6] text-white font-semibold rounded-lg opacity-40 cursor-not-allowed">
+                        Coming soon
+                    </button>
                 </div>
 
                 <!-- GPX Upload -->
