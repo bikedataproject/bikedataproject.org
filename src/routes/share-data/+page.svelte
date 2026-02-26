@@ -29,6 +29,22 @@
         if (res.ok) stats = await res.json();
     });
 
+    async function linkPolar() {
+        const user = await appManager.authenticator.getUserIdOrRedirect();
+        if (!user) return;
+
+        const response = await fetch(`${appManager.settings.public_url}/polar/login`, {
+            headers: {
+                Authorization: "Bearer " + user.access_token,
+            },
+        });
+
+        if (response.ok) {
+            const url = await response.text();
+            if (url) window.location.href = url;
+        }
+    }
+
     async function linkStrava() {
         const user = await appManager.authenticator.getUserIdOrRedirect();
         if (user === null) return;
@@ -127,6 +143,26 @@
                     </p>
                     <button disabled class="w-full py-3 px-4 bg-[#FC4C02] text-white font-semibold rounded-lg opacity-40 cursor-not-allowed">
                         Currently unavailable
+                    </button>
+                </div>
+
+                <!-- Polar -->
+                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6">
+                    <div class="flex items-center gap-4">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="#DC0019"/>
+                            <text x="20" y="27" text-anchor="middle" font-size="18" font-weight="bold" font-family="Arial, sans-serif" fill="white">P</text>
+                        </svg>
+                        <h3 class="text-xl font-bold text-gray-800 m-0">Polar</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm flex-1">
+                        Connect your Polar account to automatically share your cycling activities via the Polar AccessLink API.
+                    </p>
+                    <button
+                        onclick={linkPolar}
+                        class="w-full py-3 px-4 bg-[#DC0019] text-white font-semibold rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
+                    >
+                        Connect Polar
                     </button>
                 </div>
 
