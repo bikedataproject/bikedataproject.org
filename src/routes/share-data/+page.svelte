@@ -1,9 +1,14 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import PrivatePage from "$lib/auth/PrivatePage.svelte";
     import NavBar from "$lib/home/NavBar.svelte";
     import Footer from "$lib/home/Footer.svelte";
     import { appManager } from "$lib/AppManager";
 
+    type ProviderStats = { provider: string; tracks: number; distanceKm: number };
+    type StatsResult = { totalTracks: number; totalDistanceKm: number; byProvider: ProviderStats[] };
+
+    let stats: StatsResult | null = $state(null);
     let gpxFiles: FileList | null = $state(null);
     let dragging = $state(false);
     let uploading = $state(false);
@@ -14,6 +19,15 @@
         gpxFiles = e.dataTransfer?.files ?? null;
         uploadResult = null;
     }
+
+    onMount(async () => {
+        const user = await appManager.authenticator.getUserIdOrRedirect();
+        if (!user) return;
+        const res = await fetch(`${appManager.settings.public_url}/api/stats`, {
+            headers: { Authorization: "Bearer " + user.access_token }
+        });
+        if (res.ok) stats = await res.json();
+    });
 
     async function linkStrava() {
         const user = await appManager.authenticator.getUserIdOrRedirect();
@@ -72,6 +86,25 @@
         <section class="relative mt-16 md:mt-[200px] px-6 md:px-[8vw] mb-16 md:mb-[200px]">
             <p class="background-big-letter hidden md:block">Share</p>
             <h2>Share your data</h2>
+
+            {#if stats !== null}
+                <div class="mb-8 p-6 rounded-xl border border-gray-200 bg-gray-50">
+                    {#if stats.totalTracks > 0}
+                        <p class="text-lg font-semibold text-gray-800 mb-3">
+                            Thank you for your {stats.totalTracks} contribution{stats.totalTracks > 1 ? 's' : ''} totalling {Math.round(stats.totalDistanceKm)} km!
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            {#each stats.byProvider as p}
+                                <span class="text-sm px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-600">
+                                    {p.provider}: {p.tracks} track{p.tracks > 1 ? 's' : ''} ({Math.round(p.distanceKm)} km)
+                                </span>
+                            {/each}
+                        </div>
+                    {:else}
+                        <p class="text-gray-600">No contributions yet — use one of the options below to get started.</p>
+                    {/if}
+                </div>
+            {/if}
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
