@@ -158,6 +158,9 @@
                     <p class="text-gray-600 text-sm flex-1">
                         Connect your Polar account to automatically share your cycling activities via the Polar AccessLink API.
                     </p>
+                    <p class="text-xs text-gray-400">
+                        Polar will ask permission to access all health data — this is the only scope they offer. We only read your cycling activities.
+                    </p>
                     <button
                         onclick={linkPolar}
                         class="w-full py-3 px-4 bg-[#DC0019] text-white font-semibold rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
