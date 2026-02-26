@@ -6,10 +6,13 @@
 
     let gpxFiles: FileList | null = $state(null);
     let dragging = $state(false);
+    let uploading = $state(false);
+    let uploadResult: { imported: number; duplicates: number; failed: number; errors: string[] } | null = $state(null);
 
     function handleDrop(e: DragEvent) {
         dragging = false;
         gpxFiles = e.dataTransfer?.files ?? null;
+        uploadResult = null;
     }
 
     async function linkStrava() {
@@ -25,6 +28,40 @@
         if (response.ok) {
             const url = await response.text();
             if (url) window.location.href = url;
+        }
+    }
+
+    async function uploadFiles() {
+        if (!gpxFiles || gpxFiles.length === 0) return;
+
+        const user = await appManager.authenticator.getUserIdOrRedirect();
+        if (user === null) return;
+
+        uploading = true;
+        uploadResult = null;
+
+        try {
+            const formData = new FormData();
+            for (const file of gpxFiles) {
+                formData.append("files", file);
+            }
+
+            const response = await fetch(`${appManager.settings.public_url}/manual/upload`, {
+                method: "POST",
+                headers: {
+                    Authorization: "Bearer " + user.access_token,
+                },
+                body: formData,
+            });
+
+            if (response.ok) {
+                uploadResult = await response.json();
+                gpxFiles = null;
+            } else {
+                uploadResult = { imported: 0, duplicates: 0, failed: gpxFiles.length, errors: [`Upload failed: ${response.statusText}`] };
+            }
+        } finally {
+            uploading = false;
         }
     }
 </script>
@@ -91,7 +128,7 @@
                         <h3 class="text-xl font-bold text-gray-800 m-0">Upload GPX</h3>
                     </div>
                     <p class="text-gray-600 text-sm flex-1">
-                        Upload GPX files directly from your device. You can select multiple files at once, including exports of your past rides.
+                        Upload GPX files directly from your device. You can also upload a ZIP archive containing multiple GPX files for bulk imports.
                     </p>
 
                     <label
@@ -111,23 +148,43 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                                 </svg>
                                 <span class="text-sm font-semibold text-gray-600">Drop files here or click to browse</span>
-                                <span class="text-xs text-gray-400">.gpx files only</span>
+                                <span class="text-xs text-gray-400">.gpx or .zip files</span>
                             {/if}
                         </div>
                         <input
                             type="file"
-                            accept=".gpx"
+                            accept=".gpx,.zip"
                             multiple
                             class="hidden"
                             bind:files={gpxFiles}
+                            onchange={() => { uploadResult = null; }}
                         />
                     </label>
 
+                    {#if uploadResult}
+                        <div class="text-sm rounded-lg p-3 {uploadResult.failed > 0 ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}">
+                            <p class="font-semibold">Upload complete</p>
+                            <p>{uploadResult.imported} imported, {uploadResult.duplicates} duplicates, {uploadResult.failed} failed</p>
+                            {#if uploadResult.errors.length > 0}
+                                <ul class="mt-1 list-disc list-inside text-xs">
+                                    {#each uploadResult.errors as error}
+                                        <li>{error}</li>
+                                    {/each}
+                                </ul>
+                            {/if}
+                        </div>
+                    {/if}
+
                     <button
-                        disabled={!gpxFiles || gpxFiles.length === 0}
+                        disabled={uploading || !gpxFiles || gpxFiles.length === 0}
+                        onclick={uploadFiles}
                         class="w-full py-3 px-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                        Upload {gpxFiles && gpxFiles.length > 0 ? `${gpxFiles.length} file${gpxFiles.length > 1 ? 's' : ''}` : 'files'}
+                        {#if uploading}
+                            Uploading...
+                        {:else}
+                            Upload {gpxFiles && gpxFiles.length > 0 ? `${gpxFiles.length} file${gpxFiles.length > 1 ? 's' : ''}` : 'files'}
+                        {/if}
                     </button>
                 </div>
 
