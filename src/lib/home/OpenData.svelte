@@ -1,7 +1,7 @@
-<section class="mb-[200px] px-[8vw]">
-    <div class="flex">
-        <div class="w-1/2">
-            <div class="bg-[#ebedf5] text-[#36469d] py-20 px-16 -ml-[10rem]">
+<section class="mb-16 md:mb-[200px] px-6 md:px-[8vw] overflow-hidden">
+    <div class="flex flex-col md:flex-row">
+        <div class="w-full md:w-1/2">
+            <div class="bg-[#ebedf5] text-[#36469d] py-10 px-6 md:py-20 md:px-16 md:-ml-[10rem]">
                 <h2>Who's the data for?</h2>
                 <div class="space-y-4">
                     <p>
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-1/2 relative">
+        <div class="w-full md:w-1/2 relative hidden md:block">
             <p class="background-big-letter">Share</p>
             <img
                 class="-ml-[100px] relative -z-10 mt-[130px]"

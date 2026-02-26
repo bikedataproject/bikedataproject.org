@@ -1,6 +1,6 @@
-<section class="py-20 px-[8vw] relative">
-    <p class="background-big-letter">Power</p>
-    <div class="w-2/3">
+<section class="py-12 md:py-20 px-6 md:px-[8vw] relative overflow-hidden">
+    <p class="background-big-letter hidden md:block">Power</p>
+    <div class="w-full md:w-2/3">
         <h2>More cycling data means more power to and for cyclists</h2>
         <div class="space-y-4">
             <p>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <img
-        class="absolute right-0 -translate-y-[35rem] w-[30%]"
+        class="hidden md:block absolute right-0 -translate-y-[35rem] w-[30%]"
         src="/img/route.svg"
         alt="Striped line of a route with places marked on" />
 </section>

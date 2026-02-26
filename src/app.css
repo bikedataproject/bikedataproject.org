@@ -16,10 +16,17 @@ body {
 
 h2 {
     color: #ef4823;
-    font-size: 3.4rem;
-    margin-bottom: 5rem;
+    font-size: 2rem;
+    margin-bottom: 2rem;
     font-family: "DM Serif Display", serif;
     line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+    h2 {
+        font-size: 3.4rem;
+        margin-bottom: 5rem;
+    }
 }
 
 h3 {

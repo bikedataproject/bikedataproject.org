@@ -4,7 +4,7 @@
 </script>
 
 <nav class="fixed top-0 left-0 right-0 z-50 bg-dark">
-    <div class="max-w-[85vw] mx-auto px-[100px] flex items-center justify-between h-16">
+    <div class="mx-auto px-6 md:px-[100px] flex items-center justify-between h-16">
         <a href="/" class="flex-shrink-0">
             <Logo class="text-white" />
         </a>

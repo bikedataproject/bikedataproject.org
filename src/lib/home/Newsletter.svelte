@@ -1,5 +1,5 @@
-<section class="mb-[10rem] px-[8vw]">
-    <div class="max-w-[66%]">
+<section class="mb-12 md:mb-[10rem] px-6 md:px-[8vw]">
+    <div class="w-full md:max-w-[66%]">
         <h2>Stay informed</h2>
         <form
             action="https://bikedataproject.us10.list-manage.com/subscribe/post?u=0c7a4077dc373a78e97129b40&amp;id=48e38aad42"
@@ -14,10 +14,10 @@
                     tabindex="-1"
                     value="" />
             </div>
-            <label class="uppercase font-bold text-[1.4rem]" for="mce-EMAIL">Email</label>
+            <label class="uppercase font-bold text-lg md:text-[1.4rem]" for="mce-EMAIL">Email</label>
             <div class="flex items-center">
                 <input
-                    class="bg-transparent border-0 border-b border-[#ef4823] py-6 outline-none text-black w-full"
+                    class="bg-transparent border-0 border-b border-[#ef4823] py-4 md:py-6 outline-none text-black w-full"
                     type="email"
                     placeholder="Your email address"
                     name="EMAIL"

@@ -7,8 +7,8 @@
 <NavBar />
 
 <div class="pt-16">
-    <section class="relative mt-[200px] px-[8vw] mb-[200px]">
-        <p class="background-big-letter">Faq</p>
+    <section class="relative mt-16 md:mt-[200px] px-6 md:px-[8vw] mb-16 md:mb-[200px]">
+        <p class="background-big-letter hidden md:block">Faq</p>
         <div class="max-w-4xl">
             <h2>Frequently Asked Questions</h2>
             <div class="divide-y divide-gray-200 border-t border-gray-200">

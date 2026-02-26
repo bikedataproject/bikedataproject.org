@@ -6,7 +6,7 @@
 <NavBar />
 
 <div class="pt-16">
-    <section class="relative mt-[200px] px-[8vw] mb-16">
+    <section class="relative mt-16 md:mt-[200px] px-6 md:px-[8vw] mb-16">
         <p class="background-big-letter">Data</p>
         <div class="max-w-3xl">
             <h2>The data</h2>
@@ -27,7 +27,7 @@
         ></iframe>
     </section>
 
-    <section class="px-[8vw] mb-[200px]">
+    <section class="px-6 md:px-[8vw] mb-16 md:mb-[200px]">
         <div class="max-w-3xl">
             <p class="mb-4">
                 The anonymous aggregated cycling data will be opened up to the public
