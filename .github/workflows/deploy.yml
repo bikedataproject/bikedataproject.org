@@ -19,6 +19,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Use production settings
+        run: cp src/lib/settings.prod.ts src/lib/settings.ts
+
       - name: Build
         run: npm run build
 
