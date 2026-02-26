@@ -34,7 +34,8 @@
 <PrivatePage>
     <NavBar />
     <div class="pt-16">
-        <section class="mt-16 md:mt-[200px] px-6 md:px-[8vw] mb-16 md:mb-[200px]">
+        <section class="relative mt-16 md:mt-[200px] px-6 md:px-[8vw] mb-16 md:mb-[200px]">
+            <p class="background-big-letter hidden md:block">Share</p>
             <h2>Share your data</h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
