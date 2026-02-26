@@ -43,7 +43,17 @@
                 class="max-h-full max-w-full" />
         </a>
         <a
-            href="mailto:bikedataproject@openknowledge.be"
+            href="https://www.anyways.eu/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-white shadow-md rounded-lg h-[7.5rem] flex items-center justify-center p-4">
+            <img
+                src="/img/partners/anyways.png"
+                alt="Logo of ANYWAYS"
+                class="max-h-full max-w-full" />
+        </a>
+        <a
+            href="mailto:info@bikedataproject.org"
             class="bg-white shadow-md rounded-lg h-[7.5rem] flex items-center justify-center p-4">
             <h3 class="text-[#36469d] text-center text-[1.25rem] font-bold w-3/5">Partner up</h3>
         </a>

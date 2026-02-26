@@ -8,6 +8,7 @@
     import Power from "$lib/home/Power.svelte";
     import Newsletter from "$lib/home/Newsletter.svelte";
     import Partners from "$lib/home/Partners.svelte";
+    import Footer from "$lib/home/Footer.svelte";
 </script>
 
 <NavBar />
@@ -17,5 +18,5 @@
 <Data />
 <OpenData />
 <Power />
-<Newsletter />
 <Partners />
+<Footer />

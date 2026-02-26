@@ -1,5 +1,6 @@
 <script lang="ts">
     import NavBar from "$lib/home/NavBar.svelte";
+    import Footer from "$lib/home/Footer.svelte";
 </script>
 
 <NavBar />
@@ -145,3 +146,4 @@
         </div>
     </section>
 </div>
+<Footer />

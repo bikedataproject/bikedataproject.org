@@ -1,5 +1,6 @@
 <script lang="ts">
     import NavBar from "$lib/home/NavBar.svelte";
+    import Footer from "$lib/home/Footer.svelte";
 </script>
 
 <NavBar />
@@ -59,11 +60,6 @@
                     related products and services.
                 </li>
             </ul>
-            <p class="mb-16">
-                All aggregated cycling data will be available as open data by the end
-                of October 2020. For now, you can contribute to the project by
-                donating your cycling data.
-            </p>
 
             <div class="flex justify-center mt-[10vh]">
                 <div class="text-center flex flex-col items-center gap-4">
@@ -82,3 +78,4 @@
         </div>
     </section>
 </div>
+<Footer />

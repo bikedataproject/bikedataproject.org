@@ -1,6 +1,7 @@
 <script lang="ts">
     import NavBar from "$lib/home/NavBar.svelte";
     import Question from "$lib/home/Question.svelte";
+    import Footer from "$lib/home/Footer.svelte";
 </script>
 
 <NavBar />
@@ -146,7 +147,7 @@
                         don't ask for your name or any other information that identifies
                         you), you can ask us to extract your data from the Bike Data
                         Project platform. If you'd like to do so, please send us an email
-                        to bikedataproject@openknowledge.be with the name of the app
+                        to info@bikedataproject.org with the name of the app
                         you've used to contribute your data and, if possible, also the ID
                         number associated with your account in the app.
                     </p>
@@ -193,3 +194,4 @@
         </div>
     </section>
 </div>
+<Footer />
