@@ -1,16 +1,37 @@
 @import 'tailwindcss';
-@import 'maplibre-gl/dist/maplibre-gl.css';
+
+body {
+    font-family: "Mulish", sans-serif;
+}
+
+.background-big-letter {
+    position: absolute;
+    transform: translate(5rem, 2rem);
+    z-index: -1;
+    font-size: 16rem;
+    line-height: 0;
+    font-weight: 900;
+    color: #f2f2f2;
+}
+
+h2 {
+    color: #ef4823;
+    font-size: 3.4rem;
+    margin-bottom: 5rem;
+    font-family: "DM Serif Display", serif;
+    line-height: 1.2;
+}
 
 @plugin '@tailwindcss/typography';
 
 @theme {
-    --color-primary: #ffc000;
-    --color-primary-lighter: #ffc61a;
-    --color-primary-darker: #e6ac00;
-    --color-primary-hover: #e6ac00;
+    --color-primary: #ef4823;
+    --color-primary-lighter: #f26040;
+    --color-primary-darker: #d43d1a;
+    --color-primary-hover: #d43d1a;
 
-    --color-dark: #1b2a4e;
-    --color-dark-hover: #2e4885;
+    --color-dark: #212529;
+    --color-dark-hover: #343a40;
     --color-light: #f4f7fb;
     --color-light-hover: #dae4f1;
     --color-beige: #F5F5DC;
@@ -40,56 +61,3 @@
     --cursor-draw-connect-line: url('/img/cursors/cursor-draw-connect-line.png') 9 9, auto;
     --cursor-draw-connect-point: url('/img/cursors/cursor-draw-connect-point.png') 9 9, auto;
 }
-
-.maplibregl-canvas-container.maplibregl-interactive {
-    cursor: unset;
-}
-
-.maplibregl-popup-content {
-    padding: 0;
-}
-
-.preset-icon-container path.line.stroke {
-    stroke-width: 2;
-}
-
-.preset-icon-container path.line.casing {
-    stroke: #afafaf;
-    stroke-width: 4 !important;
-}
-
-.cycleway path.line.stroke {
-    stroke: #FFF;
-    stroke-dasharray: 6, 6;
-    stroke-width: 2 !important;
-}
-
-.cycleway path.line.casing {
-    stroke: #58a9ed;
-    stroke-dasharray: none;
-}
-
-.footway path.line.stroke {
-    stroke: #FFF;
-    stroke-dasharray: 6, 6;
-    stroke-width: 2 !important;
-}
-
-.footway path.line.casing {
-    stroke: #988;
-    stroke-dasharray: none;
-}
-.footway  {
-    color: #988;
-}
-
-.preset-icon-container-secondary path.line.casing {
-    stroke: #70372f;
-}
-
-.preset-icon-container circle.vertex {
-    fill: #fff;
-    stroke: rgba(0, 0, 0, 0.25);
-}
-
-

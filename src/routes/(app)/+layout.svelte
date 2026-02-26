@@ -1,5 +1,6 @@
 <script lang="ts">
     import "../../app.css";
+    import 'maplibre-gl/dist/maplibre-gl.css';
     import Logo from "$lib/svg/Logo.svelte";
     import {appManager} from "$lib/AppManager";
     import type {LayoutProps} from "./$types";
