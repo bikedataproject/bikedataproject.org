@@ -15,7 +15,7 @@
             <a href="/faq" class="text-white/80 hover:text-white px-3 py-2 text-sm">FAQ</a>
             <a href="/about" class="text-white/80 hover:text-white px-3 py-2 text-sm">About</a>
             <a href="https://wiki.bikedataproject.org/" class="text-white/80 hover:text-white px-3 py-2 text-sm">Wiki</a>
-            <a href="#share-section" class="ml-2 px-4 py-2 bg-primary text-white font-semibold rounded text-sm hover:bg-primary-hover">
+            <a href="/share-data" class="ml-2 px-4 py-2 bg-primary text-white font-semibold rounded text-sm hover:bg-primary-hover">
                 Participate
             </a>
         </div>
@@ -44,7 +44,7 @@
             <a href="/faq" class="text-white/80 hover:text-white py-2 text-sm" onclick={() => mobileOpen = false}>FAQ</a>
             <a href="/about" class="text-white/80 hover:text-white py-2 text-sm" onclick={() => mobileOpen = false}>About</a>
             <a href="https://wiki.bikedataproject.org/" class="text-white/80 hover:text-white py-2 text-sm">Wiki</a>
-            <a href="#share-section" class="mt-2 px-4 py-2 bg-primary text-white font-semibold rounded text-sm text-center hover:bg-primary-hover" onclick={() => mobileOpen = false}>
+            <a href="/share-data" class="mt-2 px-4 py-2 bg-primary text-white font-semibold rounded text-sm text-center hover:bg-primary-hover" onclick={() => mobileOpen = false}>
                 Participate
             </a>
         </div>
