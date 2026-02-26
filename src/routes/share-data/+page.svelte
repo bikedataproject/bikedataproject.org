@@ -2,6 +2,7 @@
     import PrivatePage from "$lib/auth/PrivatePage.svelte";
     import NavBar from "$lib/home/NavBar.svelte";
     import Footer from "$lib/home/Footer.svelte";
+    import { appManager } from "$lib/AppManager";
 
     let gpxFiles: FileList | null = $state(null);
     let dragging = $state(false);
@@ -9,6 +10,24 @@
     function handleDrop(e: DragEvent) {
         dragging = false;
         gpxFiles = e.dataTransfer?.files ?? null;
+    }
+
+    async function linkStrava() {
+        const user = await appManager.authenticator.getUserIdOrRedirect();
+        if (user === null) return;
+
+        const response = await fetch("https://www.bikedataproject.org/strava/login", {
+            headers: {
+                Authorization: "Bearer " + user.access_token,
+            },
+        });
+
+        if (response.redirected) {
+            window.location.href = response.url;
+        } else if (response.ok) {
+            const url = await response.text();
+            if (url) window.location.href = url;
+        }
     }
 </script>
 
@@ -34,7 +53,9 @@
                     <p class="text-gray-600 text-sm flex-1">
                         Connect your Strava account to automatically contribute your cycling activities to the Bike Data Project. Your past rides will also be synchronized.
                     </p>
-                    <button class="w-full py-3 px-4 bg-[#FC4C02] text-white font-semibold rounded-lg hover:bg-[#e04402] transition-colors cursor-pointer">
+                    <button
+                        onclick={linkStrava}
+                        class="w-full py-3 px-4 bg-[#FC4C02] text-white font-semibold rounded-lg hover:bg-[#e04402] transition-colors cursor-pointer">
                         Link your Strava account
                     </button>
                 </div>
