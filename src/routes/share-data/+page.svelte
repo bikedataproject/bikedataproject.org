@@ -16,15 +16,13 @@
         const user = await appManager.authenticator.getUserIdOrRedirect();
         if (user === null) return;
 
-        const response = await fetch("https://www.bikedataproject.org/strava/login", {
+        const response = await fetch(`${appManager.settings.public_url}/strava/login`, {
             headers: {
                 Authorization: "Bearer " + user.access_token,
             },
         });
 
-        if (response.redirected) {
-            window.location.href = response.url;
-        } else if (response.ok) {
+        if (response.ok) {
             const url = await response.text();
             if (url) window.location.href = url;
         }
