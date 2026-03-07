@@ -23,6 +23,7 @@
                     <li><a href="/datamap" class="text-white/70 hover:text-white text-sm">The Data</a></li>
                     <li><a href="/about" class="text-white/70 hover:text-white text-sm">About</a></li>
                     <li><a href="/faq" class="text-white/70 hover:text-white text-sm">FAQ</a></li>
+                    <li><a href="/privacy" class="text-white/70 hover:text-white text-sm">Privacy Policy</a></li>
                 </ul>
             </div>
 
