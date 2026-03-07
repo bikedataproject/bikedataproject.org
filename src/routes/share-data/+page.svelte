@@ -124,71 +124,6 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-                <!-- Strava -->
-                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6 opacity-60">
-                    <div class="flex items-center gap-4">
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="40" height="40" rx="8" fill="#FC4C02"/>
-                            <path d="M22.5 28l-3.5-6.8h-3.5L22.5 36l7-14.8H26L22.5 28z" fill="white"/>
-                            <path d="M16.5 14L13 21.2h3.5l3-6.2-3-6.8L13 21.2" fill="white" opacity="0.6"/>
-                            <path d="M16.5 8.2l-3.5 13h3.5L19.5 14l-3-5.8z" fill="white"/>
-                        </svg>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-800 m-0">Strava</h3>
-                            <span class="text-xs font-semibold text-red-500 uppercase tracking-wide">Temporarily unavailable</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 text-sm flex-1">
-                        Strava is currently not giving us access and limits our integration to a single user. If you know of a workaround, please <a href="mailto:info@bikedataproject.org" class="text-[#FC4C02] underline">let us know</a>!
-                    </p>
-                    <button disabled class="w-full py-3 px-4 bg-[#FC4C02] text-white font-semibold rounded-lg opacity-40 cursor-not-allowed">
-                        Currently unavailable
-                    </button>
-                </div>
-
-                <!-- Polar (temporarily disabled — re-enable by removing opacity-60, disabled button, and status badge) -->
-                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6 opacity-60">
-                    <div class="flex items-center gap-4">
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="40" height="40" rx="8" fill="#DC0019"/>
-                            <text x="20" y="27" text-anchor="middle" font-size="18" font-weight="bold" font-family="Arial, sans-serif" fill="white">P</text>
-                        </svg>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-800 m-0">Polar</h3>
-                            <span class="text-xs font-semibold text-red-500 uppercase tracking-wide">Temporarily unavailable</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 text-sm flex-1">
-                        Connect your Polar account to automatically share your cycling activities via the Polar AccessLink API.
-                    </p>
-                    <p class="text-xs text-gray-400">
-                        Polar will ask permission to access all health data — this is the only scope they offer. We only read your cycling activities.
-                    </p>
-                    <button disabled class="w-full py-3 px-4 bg-[#DC0019] text-white font-semibold rounded-lg opacity-40 cursor-not-allowed">
-                        Currently unavailable
-                    </button>
-                </div>
-
-                <!-- Garmin -->
-                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6 opacity-60">
-                    <div class="flex items-center gap-4">
-                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="40" height="40" rx="8" fill="#006DB6"/>
-                            <text x="20" y="27" text-anchor="middle" font-size="18" font-weight="bold" font-family="Arial, sans-serif" fill="white">G</text>
-                        </svg>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-800 m-0">Garmin</h3>
-                            <span class="text-xs font-semibold text-blue-500 uppercase tracking-wide">API access pending</span>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 text-sm flex-1">
-                        We have applied for access to the official Garmin Health API but have not yet been accepted. We'll enable this integration as soon as we get access.
-                    </p>
-                    <button disabled class="w-full py-3 px-4 bg-[#006DB6] text-white font-semibold rounded-lg opacity-40 cursor-not-allowed">
-                        Coming soon
-                    </button>
-                </div>
-
                 <!-- GPX Upload -->
                 <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6">
                     <div class="flex items-center gap-4">
@@ -281,6 +216,71 @@
                     >
                         Download APK (Android)
                     </a>
+                </div>
+
+                <!-- Strava -->
+                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6 opacity-60">
+                    <div class="flex items-center gap-4">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="#FC4C02"/>
+                            <path d="M22.5 28l-3.5-6.8h-3.5L22.5 36l7-14.8H26L22.5 28z" fill="white"/>
+                            <path d="M16.5 14L13 21.2h3.5l3-6.2-3-6.8L13 21.2" fill="white" opacity="0.6"/>
+                            <path d="M16.5 8.2l-3.5 13h3.5L19.5 14l-3-5.8z" fill="white"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 m-0">Strava</h3>
+                            <span class="text-xs font-semibold text-red-500 uppercase tracking-wide">Temporarily unavailable</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm flex-1">
+                        Strava is currently not giving us access and limits our integration to a single user. If you know of a workaround, please <a href="mailto:info@bikedataproject.org" class="text-[#FC4C02] underline">let us know</a>!
+                    </p>
+                    <button disabled class="w-full py-3 px-4 bg-[#FC4C02] text-white font-semibold rounded-lg opacity-40 cursor-not-allowed">
+                        Currently unavailable
+                    </button>
+                </div>
+
+                <!-- Polar -->
+                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6 opacity-60">
+                    <div class="flex items-center gap-4">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="#DC0019"/>
+                            <text x="20" y="27" text-anchor="middle" font-size="18" font-weight="bold" font-family="Arial, sans-serif" fill="white">P</text>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 m-0">Polar</h3>
+                            <span class="text-xs font-semibold text-red-500 uppercase tracking-wide">Temporarily unavailable</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm flex-1">
+                        Connect your Polar account to automatically share your cycling activities via the Polar AccessLink API.
+                    </p>
+                    <p class="text-xs text-gray-400">
+                        Polar will ask permission to access all health data — this is the only scope they offer. We only read your cycling activities.
+                    </p>
+                    <button disabled class="w-full py-3 px-4 bg-[#DC0019] text-white font-semibold rounded-lg opacity-40 cursor-not-allowed">
+                        Currently unavailable
+                    </button>
+                </div>
+
+                <!-- Garmin -->
+                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6 opacity-60">
+                    <div class="flex items-center gap-4">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="40" height="40" rx="8" fill="#006DB6"/>
+                            <text x="20" y="27" text-anchor="middle" font-size="18" font-weight="bold" font-family="Arial, sans-serif" fill="white">G</text>
+                        </svg>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 m-0">Garmin</h3>
+                            <span class="text-xs font-semibold text-blue-500 uppercase tracking-wide">API access pending</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm flex-1">
+                        We have applied for access to the official Garmin Health API but have not yet been accepted. We'll enable this integration as soon as we get access.
+                    </p>
+                    <button disabled class="w-full py-3 px-4 bg-[#006DB6] text-white font-semibold rounded-lg opacity-40 cursor-not-allowed">
+                        Coming soon
+                    </button>
                 </div>
 
             </div>
