@@ -10,7 +10,7 @@
                 <p class="text-sm text-gray-500 mb-4">
                     Strava is currently unavailable — they limit our integration to a single user.
                     Garmin API access is pending approval.
-                    For now, GPX upload is the only active option.
+                    You can upload GPX files or track rides directly with our <a href="https://github.com/bikedataproject/mobile-app/releases/latest" target="_blank" rel="noopener noreferrer" class="text-primary underline">Android mobile app</a>.
                 </p>
                 <a href="/share-data" class="inline-block px-4 py-2 bg-primary text-white font-semibold rounded text-sm hover:bg-primary-hover transition-colors">
                     Start sharing your data

@@ -260,6 +260,29 @@
                     </button>
                 </div>
 
+                <!-- Mobile App -->
+                <div class="border border-gray-200 rounded-xl p-8 flex flex-col gap-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-dark flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 m-0">Mobile App</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm flex-1">
+                        Track your bike rides with GPS using our Android app. Rides are stored locally and uploaded automatically to the Bike Data Project.
+                    </p>
+                    <a
+                        href="https://github.com/bikedataproject/mobile-app/releases/latest"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="w-full py-3 px-4 bg-dark text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors text-center"
+                    >
+                        Download APK (Android)
+                    </a>
+                </div>
+
             </div>
         </section>
     </div>
