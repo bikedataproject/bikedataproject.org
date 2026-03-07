@@ -58,16 +58,20 @@
 
                 <Question question="How do I contribute my data?">
                     <p>
-                        You can simply connect your existing cycling app to the Bike Data
-                        Project platform. For now, you can either connect your Strava
-                        account or upload your Garmin files, but we're also working on the
-                        integration of other cycling apps. Once your app is connected you
-                        can just carry on as usual and your rides will be automatically
-                        uploaded to the Bike Data Project platform. If you do not use any
-                        cycling app yet, you will be able to use our own app soon. With
-                        the Bike Data Project app, you won't need to create an account,
-                        you will be able to anonymously share your data to the platform.
+                        There are two ways to contribute your cycling data:
                     </p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>
+                            <span class="font-semibold">Mobile app</span> — Install our
+                            <a href="https://github.com/bikedataproject/mobile-app/releases/latest" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary-hover">Android app</a>,
+                            hit record, and your ride is uploaded automatically.
+                        </li>
+                        <li>
+                            <span class="font-semibold">GPX upload</span> — Export rides from any cycling app
+                            (Garmin, Strava, Wahoo, etc.) as GPX files and upload them on our
+                            <a href="/share-data" class="text-primary underline hover:text-primary-hover">share data</a> page.
+                        </li>
+                    </ul>
                 </Question>
 
                 <Question question="What is happening with my data?">
@@ -109,11 +113,6 @@
                             related products and services.
                         </li>
                     </ul>
-                    <p>
-                        All aggregated cycling data will be available as open data by the
-                        end of October 2020. For now, you can contribute to the project by
-                        donating your cycling data.
-                    </p>
                 </Question>
 
                 <Question question="Is my privacy respected when I contribute my data?">
@@ -153,41 +152,35 @@
                     </p>
                 </Question>
 
-                <Question question="What data am I sharing from my app?">
+                <Question question="What data am I sharing?">
                     <p>
-                        We mainly want to ask you to contribute the data regarding your
-                        cycling activities, more specifically where and when you cycle.
-                        Besides that, there's the possibility to share information on your
-                        gender, age, type of bicycles and the reason of your bicycle
-                        ride (leisure, sports, commute, ...).
+                        We collect your cycling GPS tracks — specifically where and when
+                        you cycle. We do not collect any personal information such as your
+                        name, age, or gender.
                     </p>
                 </Question>
 
                 <Question question="How do I get access to the open data?">
                     <p>
-                        The anonymous aggregated cycling data will be opened up to the
-                        public as open data. The open data provided by the Bike Data
-                        Project platform can be freely used by different stakeholders and
-                        for different purposes.
-                    </p>
-                    <p>
-                        All aggregated cycling data will be available as open data by the
-                        end of October 2020. For now, you can contribute to the project by
-                        donating your cycling data.
+                        The anonymous aggregated cycling data is available as open data.
+                        You can explore the data on our <a href="/datamap" class="text-primary underline hover:text-primary-hover">data map</a>
+                        or access the raw datasets on <a href="https://data.bikedataproject.org/" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary-hover">data.bikedataproject.org</a>.
+                        The data can be freely used by anyone under a Creative Commons license.
                     </p>
                 </Question>
 
                 <Question question="I'd love to be more involved in this project - how can I help?">
                     <p>
-                        That's awesome! Feel free to join our
+                        That's awesome! Check out our
                         <a
-                            href="https://join.slack.com/t/bikedataproject/shared_invite/zt-hr00amgw-elYn9WbdFHLta8qQKW_wvQ"
+                            href="https://github.com/bikedataproject"
                             target="_blank"
                             rel="noopener noreferrer"
                             class="text-primary underline hover:text-primary-hover"
-                        >Slack group</a>
-                        and introduce yourself there. We'd love to hear how you'd like to
-                        contribute to the project!
+                        >GitHub</a>
+                        — all our code is open source and contributions are welcome.
+                        You can also help by spreading the word and encouraging fellow
+                        cyclists to share their data.
                     </p>
                 </Question>
             </div>
