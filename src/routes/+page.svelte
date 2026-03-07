@@ -1,7 +1,6 @@
 <script lang="ts">
     import NavBar from "$lib/home/NavBar.svelte";
     import Head from "$lib/home/Head.svelte";
-    import Help from "$lib/home/Help.svelte";
     import Share from "$lib/home/Share.svelte";
     import Data from "$lib/home/Data.svelte";
     import OpenData from "$lib/home/OpenData.svelte";
@@ -13,7 +12,6 @@
 
 <NavBar />
 <Head />
-<Help />
 <Share />
 <Data />
 <OpenData />
