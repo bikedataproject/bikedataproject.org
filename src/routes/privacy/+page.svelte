@@ -22,12 +22,14 @@
             <h3>2. What data we collect</h3>
             <p class="mb-4">When you use the Bike Data Project, we collect:</p>
             <ul class="list-disc pl-6 space-y-2 mb-6">
-                <li><strong>Account data</strong> — Email address and a user identifier, collected when you register via our authentication provider (Keycloak).</li>
+                <li><strong>Account data</strong> — Email address and a user identifier, collected when you register via our self-hosted authentication provider.</li>
                 <li><strong>Cycling GPS tracks</strong> — GPS coordinates, elevation, and timestamps recorded during your rides, either uploaded as GPX files or recorded via our mobile app.</li>
                 <li><strong>Activity metadata</strong> — Distance and the source of the data (e.g. mobile app, manual upload).</li>
             </ul>
             <p class="mb-6">
-                We do <strong>not</strong> collect your name, age, gender, or any other personal profile information beyond your email address.
+                In the future, we may offer the option to share additional demographic information
+                such as age range, gender, or ride purpose. This will always be voluntary and
+                used only in aggregate to better understand cycling populations.
             </p>
 
             <h3>3. Why we collect it</h3>
@@ -46,24 +48,27 @@
 
             <h3>5. How we use and publish data</h3>
             <p class="mb-4">
-                Individual cycling tracks are aggregated into collective, anonymised datasets. We apply the following safeguards:
+                You choose how your cycling data is shared. When you contribute data, you can select one of three sharing levels:
             </p>
-            <ul class="list-disc pl-6 space-y-2 mb-6">
-                <li>Data only appears in public datasets if at least 3 different cyclists have used a specific road segment.</li>
-                <li>Published data cannot be traced back to individual cyclists.</li>
-                <li>Aggregated data is published under a <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary-hover">Creative Commons Attribution 4.0</a> license.</li>
+            <ul class="list-disc pl-6 space-y-2 mb-4">
+                <li><strong>Open</strong> — Your raw tracks are published as open data, freely available to anyone.</li>
+                <li><strong>Partners only</strong> — Your data is shared privately with our partners (e.g. city planners, mobility researchers) but is not publicly available.</li>
+                <li><strong>Anonymised</strong> — Your data is only used in aggregated, anonymised datasets where individual tracks cannot be identified.</li>
             </ul>
+            <p class="mb-6">
+                You can change your sharing preference at any time.
+                Aggregated open data is published under the <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary-hover">Open Database License (ODbL)</a>.
+            </p>
 
             <h3>6. Data storage and security</h3>
             <p class="mb-6">
                 Your data is stored on servers hosted by Hetzner in the EU (Helsinki, Finland).
-                Access is secured via SSH key authentication and encrypted connections.
-                Database credentials are managed via Docker Swarm secrets.
+                Access is secured via encrypted connections.
             </p>
 
             <h3>7. Third-party services</h3>
             <ul class="list-disc pl-6 space-y-2 mb-6">
-                <li><strong>Keycloak</strong> — Self-hosted authentication. Your email and user ID are stored in our Keycloak instance.</li>
+                <li><strong>Authentication</strong> — Self-hosted. Your email and user ID are stored on our own servers.</li>
                 <li><strong>Hetzner Cloud</strong> — Server infrastructure provider (EU).</li>
             </ul>
             <p class="mb-6">
