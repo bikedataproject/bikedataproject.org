@@ -1,11 +1,14 @@
-name: Deploy
+name: Build & Deploy
 
 on:
   push:
     branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +28,25 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Upload build artifact
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-app-build
+          path: build/
+
+  deploy:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-app-build
+          path: build/
+
       - name: Deploy to server
         uses: burnett01/rsync-deployments@7.0.1
         with:
@@ -34,3 +56,9 @@ jobs:
           remote_host: ${{ secrets.DEPLOY_HOST }}
           remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
