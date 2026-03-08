@@ -37,9 +37,9 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     class="text-primary underline hover:text-primary-hover">Bikes vs Cars documentary</a>,
-                directed by Fredrik Gertten. As the documentary has been screened
-                in over 50 countries, there has already been collected more than
-                275.000 bicycle rides collected.
+                directed by Fredrik Gertten. The documentary has been screened
+                in over 50 countries and helped kickstart a global community
+                of cyclists sharing their ride data.
             </p>
             <p class="mb-4">
                 At the beginning of 2020, the project was moved under the umbrella
@@ -125,23 +125,17 @@
                 </li>
             </ul>
 
-            <h3>Longer-term sustainability of the Bike Data Project</h3>
+            <h3>Sustainability</h3>
             <p>
-                Open Knowledge Belgium partners up with Brussels Mobility to launch,
-                as part of its Bike for Brussels program, a first campaign in the
-                Brussels-Capital Region. The launch of local crowdsourcing campaigns
-                in different cities and the setup of the open data platform are part
-                of a longer-term plan for the Bike Data Project. When a
-                crowdsourcing campaign in a specific city or region comes to an end,
-                the platform will stay online and will be maintained by the open
-                source community of Open Knowledge Belgium. Cycling communities in
-                other cities will be encouraged to launch a campaign in their cities
-                and make use of the platform. Given the interest of different
-                stakeholders in the Bike Data Platform, Open Knowledge Belgium has
-                already received confirmation from different stakeholders that they
-                want to contribute financially to the project so that the server
-                costs can get covered. In that way, the project will be sustained
-                over the longer term.
+                The Bike Data Project platform is global and maintained by the open
+                source community. The platform stays online and freely available,
+                and cycling communities anywhere in the world are welcome to use it.
+                All source code is available on
+                <a
+                    href="https://github.com/bikedataproject"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-primary underline hover:text-primary-hover">GitHub</a>.
             </p>
         </div>
     </section>
