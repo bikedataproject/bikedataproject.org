@@ -9,7 +9,7 @@
     import { appManager } from "$lib/AppManager";
 
     type ContributionDetail = {
-        id: number;
+        id: string;
         provider: string;
         distanceKm: number | null;
         durationMinutes: number | null;

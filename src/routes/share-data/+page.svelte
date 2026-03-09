@@ -8,7 +8,7 @@
 
     type ProviderStats = { provider: string; tracks: number; distanceKm: number };
     type StatsResult = { totalTracks: number; totalDistanceKm: number; byProvider: ProviderStats[] };
-    type Contribution = { id: number; provider: string; distanceKm: number | null; durationMinutes: number | null; startTime: string };
+    type Contribution = { id: string; provider: string; distanceKm: number | null; durationMinutes: number | null; startTime: string };
     type ContributionsResponse = { items: Contribution[]; total: number };
 
     let stats: StatsResult | null = $state(null);
