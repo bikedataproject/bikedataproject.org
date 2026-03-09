@@ -49,6 +49,4 @@ Pushes to `main` trigger a CI build. Tagging a commit with `v*` (e.g., `v0.1.7`)
 
 ## Resources
 
-- [Heroicons](https://heroicons.com/) — icons
 - [Tailwind CSS](https://tailwindcss.com/) — styling
-- [The Noun Project — Traffic Signs](https://thenounproject.com/browse/collection-icon/traffic-signs-60421/) — illustrations
