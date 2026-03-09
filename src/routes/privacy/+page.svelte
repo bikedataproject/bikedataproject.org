@@ -51,8 +51,8 @@
                 You choose how your cycling data is shared. When you contribute data, you can select one of three sharing levels:
             </p>
             <ul class="list-disc pl-6 space-y-2 mb-4">
-                <li><strong>Open</strong> — Your raw tracks are published as open data, freely available to anyone.</li>
-                <li><strong>Partners only</strong> — Your data is shared privately with our partners (e.g. city planners, mobility researchers) but is not publicly available.</li>
+                <li><strong>Open</strong> — Your raw tracks are published as open data, freely available to anyone. Your data is also shared with partners and included in anonymised datasets.</li>
+                <li><strong>Partners only</strong> — Your data is shared privately with our partners (e.g. city planners, mobility researchers) and included in anonymised datasets, but is not publicly available.</li>
                 <li><strong>Anonymised</strong> — Your data is only used in aggregated, anonymised datasets where individual tracks cannot be identified.</li>
             </ul>
             <p class="mb-6">

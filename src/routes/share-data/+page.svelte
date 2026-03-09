@@ -11,7 +11,16 @@
     type Contribution = { id: string; provider: string; distanceKm: number | null; durationMinutes: number | null; startTime: string };
     type ContributionsResponse = { items: Contribution[]; total: number };
 
+    type PrivacyOption = { value: string; label: string; description: string };
+    const privacyOptions: PrivacyOption[] = [
+        { value: "open", label: "Open", description: "Your raw tracks are published as open data, freely available to anyone. Your data is also shared with partners and included in anonymised datasets." },
+        { value: "partners", label: "Partners only", description: "Your data is shared privately with our partners (e.g. city planners, mobility researchers) and included in anonymised datasets, but is not publicly available." },
+        { value: "anonymised", label: "Anonymised", description: "Your data is only used in aggregated, anonymised datasets where individual tracks cannot be identified." }
+    ];
+
     let stats: StatsResult | null = $state(null);
+    let privacyLevel: string | null | undefined = $state(undefined); // undefined = loading, null = not set
+    let privacySaving = $state(false);
     let contributions: Contribution[] = $state([]);
     let contributionsTotal = $state(0);
     let contributionsLoading = $state(false);
@@ -36,10 +45,21 @@
 
         const user = await appManager.authenticator.getUserIdOrRedirect();
         if (!user) return;
-        const res = await fetch(`${appManager.settings.api_url}/api/stats`, {
-            headers: { Authorization: "Bearer " + user.access_token }
-        });
-        if (res.ok) stats = await res.json();
+        const [statsRes, settingsRes] = await Promise.all([
+            fetch(`${appManager.settings.api_url}/api/stats`, {
+                headers: { Authorization: "Bearer " + user.access_token }
+            }),
+            fetch(`${appManager.settings.api_url}/api/settings`, {
+                headers: { Authorization: "Bearer " + user.access_token }
+            })
+        ]);
+        if (statsRes.ok) stats = await statsRes.json();
+        if (settingsRes.ok) {
+            const data = await settingsRes.json();
+            privacyLevel = data.privacyLevel ?? null;
+        } else {
+            privacyLevel = null;
+        }
 
         await loadContributions();
     });
@@ -89,6 +109,28 @@
     function formatDate(iso: string): string {
         const d = new Date(iso);
         return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
+
+    async function savePrivacyLevel(level: string) {
+        privacySaving = true;
+        try {
+            const user = await appManager.authenticator.getUserIdOrRedirect();
+            if (!user) return;
+            const res = await fetch(`${appManager.settings.api_url}/api/settings`, {
+                method: "PUT",
+                headers: {
+                    Authorization: "Bearer " + user.access_token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ privacyLevel: level })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                privacyLevel = data.privacyLevel;
+            }
+        } finally {
+            privacySaving = false;
+        }
     }
 
     async function linkPolar() {
@@ -161,28 +203,63 @@
 <PrivatePage>
     <NavBar />
     <div class="pt-16">
-        <section class="relative mt-16 md:mt-[200px] px-6 md:px-[8vw] mb-16 md:mb-[200px]">
+        <section class="relative mt-8 md:mt-16 px-6 md:px-[8vw] mb-16 md:mb-[200px]">
             <p class="background-big-letter hidden md:block">Share</p>
             <h2>Share your data</h2>
 
-            {#if stats !== null}
-                <div class="mb-8 p-6 rounded-xl border border-gray-200 bg-gray-50">
-                    {#if stats.totalTracks > 0}
-                        <p class="text-lg font-semibold text-gray-800 mb-3">
-                            Thank you for your {stats.totalTracks} contribution{stats.totalTracks > 1 ? 's' : ''} totalling {Math.round(stats.totalDistanceKm)} km!
-                        </p>
-                        <div class="flex flex-wrap gap-3">
-                            {#each stats.byProvider as p}
-                                <span class="text-sm px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-600">
-                                    {p.provider}: {p.tracks} track{p.tracks > 1 ? 's' : ''} ({Math.round(p.distanceKm)} km)
-                                </span>
-                            {/each}
-                        </div>
-                    {:else}
-                        <p class="text-gray-600">No contributions yet — use one of the options below to get started.</p>
-                    {/if}
+            {#if privacyLevel === null}
+                <div class="mb-8 p-6 rounded-xl border-2 border-primary bg-orange-50">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">Choose your data sharing level</h3>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Before you can share data, please choose how your cycling data may be used.
+                        You can change this at any time. See our <a href="/privacy" class="text-primary underline hover:text-primary-hover">privacy policy</a> for details.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {#each privacyOptions as opt}
+                            <button
+                                disabled={privacySaving}
+                                onclick={() => savePrivacyLevel(opt.value)}
+                                class="p-4 rounded-lg border-2 border-gray-200 bg-white text-left hover:border-primary transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                <p class="font-semibold text-gray-800 mb-1">{opt.label}</p>
+                                <p class="text-xs text-gray-500">{opt.description}</p>
+                            </button>
+                        {/each}
+                    </div>
                 </div>
-            {/if}
+            {:else if privacyLevel !== undefined}
+                <div class="mb-8 p-4 rounded-xl border border-gray-200 bg-gray-50">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="text-sm text-gray-600">Data sharing level:</span>
+                        {#each privacyOptions as opt}
+                            <button
+                                disabled={privacySaving}
+                                onclick={() => savePrivacyLevel(opt.value)}
+                                class="text-sm px-3 py-1.5 rounded-lg border transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed {privacyLevel === opt.value ? 'border-primary bg-primary text-white font-semibold' : 'border-gray-200 bg-white text-gray-600 hover:border-primary'}"
+                            >{opt.label}</button>
+                        {/each}
+                        <a href="/privacy" class="text-xs text-gray-400 hover:text-primary ml-auto">Privacy policy</a>
+                    </div>
+                </div>
+
+                {#if stats !== null}
+                    <div class="mb-8 p-6 rounded-xl border border-gray-200 bg-gray-50">
+                        {#if stats.totalTracks > 0}
+                            <p class="text-lg font-semibold text-gray-800 mb-3">
+                                Thank you for your {stats.totalTracks} contribution{stats.totalTracks > 1 ? 's' : ''} totalling {Math.round(stats.totalDistanceKm)} km!
+                            </p>
+                            <div class="flex flex-wrap gap-3">
+                                {#each stats.byProvider as p}
+                                    <span class="text-sm px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-600">
+                                        {p.provider}: {p.tracks} track{p.tracks > 1 ? 's' : ''} ({Math.round(p.distanceKm)} km)
+                                    </span>
+                                {/each}
+                            </div>
+                        {:else}
+                            <p class="text-gray-600">No contributions yet — use one of the options below to get started.</p>
+                        {/if}
+                    </div>
+                {/if}
 
             {#if contributionsTotal > 0 || contributionsLoading}
                 <div class="mb-8">
@@ -402,6 +479,8 @@
                 </div>
 
             </div>
+
+            {/if}
         </section>
     </div>
     <Footer />
