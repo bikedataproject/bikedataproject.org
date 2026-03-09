@@ -44,10 +44,20 @@
             <span>CO2 saved</span>
         </div>
     </div>
-    <div class="flex flex-col items-center mt-12 md:mt-24">
-        <h3 class="text-xl font-semibold">Interested in the data by region?</h3>
-        <a href="/datamap" class="mt-3 px-6 py-2 bg-[#36469d] text-white rounded hover:bg-[#2a3580]">
-            Explore the data
-        </a>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 md:mt-24 max-w-3xl mx-auto">
+        <div class="flex flex-col items-center text-center p-6 rounded-xl border border-gray-200 bg-gray-50">
+            <h3 class="text-xl font-semibold mb-2">Explore the map</h3>
+            <p class="text-sm text-gray-600 mb-4">Browse anonymised cycling data by region on our interactive map.</p>
+            <a href="/datamap" class="px-6 py-2 bg-[#36469d] text-white rounded hover:bg-[#2a3580]">
+                View the map
+            </a>
+        </div>
+        <div class="flex flex-col items-center text-center p-6 rounded-xl border border-gray-200 bg-gray-50">
+            <h3 class="text-xl font-semibold mb-2">Download open data</h3>
+            <p class="text-sm text-gray-600 mb-4">Download all openly shared contributions as GPX tracks in a single zip file. Licensed under the <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener noreferrer" class="text-primary underline hover:text-primary-hover">Open Database License (ODbL)</a>.</p>
+            <a href="https://www.bikedataproject.org/api/data/contributions-open.zip" class="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90">
+                Download GPX zip
+            </a>
+        </div>
     </div>
 </section>
