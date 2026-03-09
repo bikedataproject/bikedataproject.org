@@ -138,7 +138,7 @@
 <PrivatePage>
     <NavBar />
     <div class="pt-16">
-        <section class="relative mt-16 md:mt-[200px] px-6 md:px-[8vw] mb-16 md:mb-[200px]">
+        <section class="relative mt-8 md:mt-16 px-6 md:px-[8vw] mb-16">
             <a href="/share-data" class="text-sm text-gray-500 hover:text-primary transition-colors mb-6 inline-flex items-center gap-1">
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
