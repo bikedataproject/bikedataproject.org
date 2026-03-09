@@ -1,7 +1,7 @@
 <script>
 </script>
 
-<footer class="bg-primary text-white pt-10 mt-[14rem]">
+<footer class="bg-primary text-white pt-10">
     <div class="pb-10 px-[8vw]">
         <div class="flex flex-wrap gap-8">
             <!-- Intro + OKB logo -->
