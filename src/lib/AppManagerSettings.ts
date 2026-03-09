@@ -2,6 +2,7 @@ import { settings } from "./settings";
 
 export class AppManagerSettings {
     public readonly public_url: string;
+    public readonly api_url: string;
     public readonly root_url: string;
     public readonly auth: AuthSettings;
 
@@ -12,6 +13,9 @@ export class AppManagerSettings {
         if (this.public_url.endsWith("/")) this.public_url = this.public_url.substring(0, this.public_url.length - 1);
         this.root_url = url.origin;
         if (this.root_url.endsWith("/")) this.root_url = this.root_url.substring(0, this.root_url.length - 1);
+
+        this.api_url = settings.api_url;
+        if (this.api_url.endsWith("/")) this.api_url = this.api_url.substring(0, this.api_url.length - 1);
 
         this.auth = new AuthSettings(settings.auth);
     }

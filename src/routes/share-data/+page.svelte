@@ -7,8 +7,15 @@
 
     type ProviderStats = { provider: string; tracks: number; distanceKm: number };
     type StatsResult = { totalTracks: number; totalDistanceKm: number; byProvider: ProviderStats[] };
+    type Contribution = { id: number; provider: string; distanceKm: number | null; durationMinutes: number | null; startTime: string };
+    type ContributionsResponse = { items: Contribution[]; total: number };
 
     let stats: StatsResult | null = $state(null);
+    let contributions: Contribution[] = $state([]);
+    let contributionsTotal = $state(0);
+    let contributionsLoading = $state(false);
+    let contributionsOffset = $state(0);
+    const contributionsLimit = 25;
     let gpxFiles: FileList | null = $state(null);
     let dragging = $state(false);
     let uploading = $state(false);
@@ -28,17 +35,66 @@
 
         const user = await appManager.authenticator.getUserIdOrRedirect();
         if (!user) return;
-        const res = await fetch(`${appManager.settings.public_url}/api/stats`, {
+        const res = await fetch(`${appManager.settings.api_url}/api/stats`, {
             headers: { Authorization: "Bearer " + user.access_token }
         });
         if (res.ok) stats = await res.json();
+
+        await loadContributions();
     });
+
+    async function loadContributions() {
+        contributionsLoading = true;
+        try {
+            const user = await appManager.authenticator.getUserIdOrRedirect();
+            if (!user) return;
+            const res = await fetch(
+                `${appManager.settings.api_url}/api/contributions?offset=${contributionsOffset}&limit=${contributionsLimit}`,
+                { headers: { Authorization: "Bearer " + user.access_token } }
+            );
+            if (res.ok) {
+                const data: ContributionsResponse = await res.json();
+                contributions = data.items;
+                contributionsTotal = data.total;
+            }
+        } finally {
+            contributionsLoading = false;
+        }
+    }
+
+    async function contributionsNextPage() {
+        contributionsOffset += contributionsLimit;
+        await loadContributions();
+    }
+
+    async function contributionsPrevPage() {
+        contributionsOffset = Math.max(0, contributionsOffset - contributionsLimit);
+        await loadContributions();
+    }
+
+    function formatDuration(minutes: number | null): string {
+        if (minutes === null) return "—";
+        if (minutes < 60) return `${Math.round(minutes)} min`;
+        const h = Math.floor(minutes / 60);
+        const m = Math.round(minutes % 60);
+        return `${h}h ${m}m`;
+    }
+
+    function formatDistance(km: number | null): string {
+        if (km === null) return "—";
+        return `${km.toFixed(1)} km`;
+    }
+
+    function formatDate(iso: string): string {
+        const d = new Date(iso);
+        return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
 
     async function linkPolar() {
         const user = await appManager.authenticator.getUserIdOrRedirect();
         if (!user) return;
 
-        const response = await fetch(`${appManager.settings.public_url}/polar/login`, {
+        const response = await fetch(`${appManager.settings.api_url}/polar/login`, {
             headers: {
                 Authorization: "Bearer " + user.access_token,
             },
@@ -54,7 +110,7 @@
         const user = await appManager.authenticator.getUserIdOrRedirect();
         if (user === null) return;
 
-        const response = await fetch(`${appManager.settings.public_url}/strava/login`, {
+        const response = await fetch(`${appManager.settings.api_url}/strava/login`, {
             headers: {
                 Authorization: "Bearer " + user.access_token,
             },
@@ -81,7 +137,7 @@
                 formData.append("files", file);
             }
 
-            const response = await fetch(`${appManager.settings.public_url}/manual/upload`, {
+            const response = await fetch(`${appManager.settings.api_url}/manual/upload`, {
                 method: "POST",
                 headers: {
                     Authorization: "Bearer " + user.access_token,
@@ -123,6 +179,59 @@
                         </div>
                     {:else}
                         <p class="text-gray-600">No contributions yet — use one of the options below to get started.</p>
+                    {/if}
+                </div>
+            {/if}
+
+            {#if contributionsTotal > 0 || contributionsLoading}
+                <div class="mb-8">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Your contributions</h3>
+
+                    {#if contributionsLoading}
+                        <p class="text-gray-500 text-sm">Loading contributions...</p>
+                    {:else}
+                        <div class="overflow-x-auto rounded-xl border border-gray-200">
+                            <table class="w-full text-sm text-left">
+                                <thead class="bg-gray-50 text-gray-600 uppercase text-xs tracking-wide">
+                                    <tr>
+                                        <th class="px-4 py-3">Date</th>
+                                        <th class="px-4 py-3">Distance</th>
+                                        <th class="px-4 py-3">Duration</th>
+                                        <th class="px-4 py-3">Provider</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {#each contributions as c (c.id)}
+                                        <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
+                                            <td class="px-4 py-3 text-gray-800 whitespace-nowrap">{formatDate(c.startTime)}</td>
+                                            <td class="px-4 py-3 text-gray-700">{formatDistance(c.distanceKm)}</td>
+                                            <td class="px-4 py-3 text-gray-700">{formatDuration(c.durationMinutes)}</td>
+                                            <td class="px-4 py-3">
+                                                <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-600">{c.provider}</span>
+                                            </td>
+                                        </tr>
+                                    {/each}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center justify-between mt-3">
+                            <span class="text-xs text-gray-500">
+                                {contributionsOffset + 1}–{Math.min(contributionsOffset + contributionsLimit, contributionsTotal)} of {contributionsTotal}
+                            </span>
+                            <div class="flex gap-2">
+                                <button
+                                    disabled={contributionsOffset === 0}
+                                    onclick={contributionsPrevPage}
+                                    class="px-3 py-1 text-sm rounded border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                >Previous</button>
+                                <button
+                                    disabled={contributionsOffset + contributionsLimit >= contributionsTotal}
+                                    onclick={contributionsNextPage}
+                                    class="px-3 py-1 text-sm rounded border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+                                >Next</button>
+                            </div>
+                        </div>
                     {/if}
                 </div>
             {/if}
