@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     import { goto } from "$app/navigation";
     import maplibregl from "maplibre-gl";
     import "maplibre-gl/dist/maplibre-gl.css";
@@ -48,6 +48,9 @@
         contribution = await res.json();
         loading = false;
 
+        // Wait for the DOM to render the map container before initializing
+        await tick();
+
         if (contribution && contribution.track.length >= 2) {
             initMap(contribution.track);
         }
@@ -74,7 +77,7 @@
 
         const map = new maplibregl.Map({
             container: mapContainer,
-            style: "https://api.maptiler.com/maps/019a2b2b-333b-7298-b0a0-cf94a256d93f/style.json?key=OZUCIh4RNx38vXF8gF4H",
+            style: "https://api.maptiler.com/maps/67ea3b5b-d4ac-48f3-ad92-6574c2dc9734/style.json?key=OZUCIh4RNx38vXF8gF4H",
             bounds: [[minLng, minLat], [maxLng, maxLat]] as [[number, number], [number, number]],
             fitBoundsOptions: { padding: 50 }
         });
