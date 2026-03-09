@@ -21,6 +21,11 @@
     }
 
     onMount(async () => {
+        // Don't independently trigger a redirect here — PrivatePage handles that.
+        // Calling getUserIdOrRedirect() concurrently with PrivatePage's auth check
+        // causes two competing signinRedirect() calls that can interfere.
+        if (!(await appManager.authenticator.isSignedIn())) return;
+
         const user = await appManager.authenticator.getUserIdOrRedirect();
         if (!user) return;
         const res = await fetch(`${appManager.settings.public_url}/api/stats`, {

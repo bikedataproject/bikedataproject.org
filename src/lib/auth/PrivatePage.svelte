@@ -16,4 +16,13 @@
     {#if signedIn}
         <slot/>
     {/if}
+{:catch}
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="text-center">
+            <p class="text-gray-600 mb-4">Unable to verify your session.</p>
+            <button onclick={() => window.location.reload()} class="px-4 py-2 bg-primary text-white rounded hover:bg-primary-hover cursor-pointer">
+                Try again
+            </button>
+        </div>
+    </div>
 {/await}
