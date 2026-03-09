@@ -8,7 +8,7 @@
 
     type ProviderStats = { provider: string; tracks: number; distanceKm: number };
     type StatsResult = { totalTracks: number; totalDistanceKm: number; byProvider: ProviderStats[] };
-    type Contribution = { id: string; provider: string; distanceKm: number | null; durationMinutes: number | null; startTime: string };
+    type Contribution = { id: string; provider: string; distanceKm: number | null; durationMinutes: number | null; startTime: string; privacyLevel: string | null };
     type ContributionsResponse = { items: Contribution[]; total: number };
 
     type PrivacyOption = { value: string; label: string; description: string };
@@ -91,6 +91,26 @@
     async function contributionsPrevPage() {
         contributionsOffset = Math.max(0, contributionsOffset - contributionsLimit);
         await loadContributions();
+    }
+
+    async function saveActivityPrivacy(c: Contribution, level: string | null) {
+        const user = await appManager.authenticator.getUserIdOrRedirect();
+        if (!user) return;
+        const res = await fetch(
+            `${appManager.settings.api_url}/api/contributions/${c.id}/privacy`,
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: "Bearer " + user.access_token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ privacyLevel: level })
+            }
+        );
+        if (res.ok) {
+            const data = await res.json();
+            c.privacyLevel = data.privacyLevel ?? null;
+        }
     }
 
     function formatDuration(minutes: number | null): string {
@@ -231,13 +251,15 @@
                 <div class="mb-8 p-4 rounded-xl border border-gray-200 bg-gray-50">
                     <div class="flex flex-wrap items-center gap-3">
                         <span class="text-sm text-gray-600">Data sharing level:</span>
-                        {#each privacyOptions as opt}
-                            <button
-                                disabled={privacySaving}
-                                onclick={() => savePrivacyLevel(opt.value)}
-                                class="text-sm px-3 py-1.5 rounded-lg border transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed {privacyLevel === opt.value ? 'border-primary bg-primary text-white font-semibold' : 'border-gray-200 bg-white text-gray-600 hover:border-primary'}"
-                            >{opt.label}</button>
-                        {/each}
+                        <div class="inline-flex">
+                            {#each privacyOptions as opt, i}
+                                <button
+                                    disabled={privacySaving}
+                                    onclick={() => savePrivacyLevel(opt.value)}
+                                    class="text-sm px-3 py-1.5 border transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed {i === 0 ? 'rounded-l-lg' : ''} {i === privacyOptions.length - 1 ? 'rounded-r-lg' : ''} {i > 0 ? '-ml-px' : ''} {privacyLevel === opt.value ? 'border-primary bg-primary text-white font-semibold z-10 relative' : 'border-gray-200 bg-white text-gray-600 hover:border-primary'}"
+                                >{opt.label}</button>
+                            {/each}
+                        </div>
                         <a href="/privacy" class="text-xs text-gray-400 hover:text-primary ml-auto">Privacy policy</a>
                     </div>
                 </div>
@@ -276,19 +298,27 @@
                                         <th class="px-4 py-3">Distance</th>
                                         <th class="px-4 py-3">Duration</th>
                                         <th class="px-4 py-3">Provider</th>
+                                        <th class="px-4 py-3">Sharing</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {#each contributions as c (c.id)}
-                                        <tr
-                                            class="border-t border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
-                                            onclick={() => goto(`/share-data/${c.id}`)}
-                                        >
-                                            <td class="px-4 py-3 text-gray-800 whitespace-nowrap">{formatDate(c.startTime)}</td>
-                                            <td class="px-4 py-3 text-gray-700">{formatDistance(c.distanceKm)}</td>
-                                            <td class="px-4 py-3 text-gray-700">{formatDuration(c.durationMinutes)}</td>
-                                            <td class="px-4 py-3">
+                                        <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
+                                            <td class="px-4 py-3 text-gray-800 whitespace-nowrap cursor-pointer" onclick={() => goto(`/share-data/${c.id}`)}>{formatDate(c.startTime)}</td>
+                                            <td class="px-4 py-3 text-gray-700 cursor-pointer" onclick={() => goto(`/share-data/${c.id}`)}>{formatDistance(c.distanceKm)}</td>
+                                            <td class="px-4 py-3 text-gray-700 cursor-pointer" onclick={() => goto(`/share-data/${c.id}`)}>{formatDuration(c.durationMinutes)}</td>
+                                            <td class="px-4 py-3 cursor-pointer" onclick={() => goto(`/share-data/${c.id}`)}>
                                                 <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-600">{c.provider}</span>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <div class="inline-flex">
+                                                    {#each [{ value: null, label: "Account" }, { value: "open", label: "Open" }, { value: "partners", label: "Partners" }, { value: "anonymised", label: "Anonymised" }] as opt, i}
+                                                        <button
+                                                            onclick={(e) => { e.stopPropagation(); saveActivityPrivacy(c, opt.value); }}
+                                                            class="text-xs px-2 py-0.5 border transition-colors cursor-pointer {i === 0 ? 'rounded-l-lg' : ''} {i === 3 ? 'rounded-r-lg' : ''} {i > 0 ? '-ml-px' : ''} {c.privacyLevel === opt.value ? 'border-primary bg-primary text-white font-semibold z-10 relative' : 'border-gray-200 bg-white text-gray-500 hover:border-primary'}"
+                                                        >{opt.label}</button>
+                                                    {/each}
+                                                </div>
                                             </td>
                                         </tr>
                                     {/each}
@@ -317,6 +347,7 @@
                 </div>
             {/if}
 
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Contribution Options</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
                 <!-- GPX Upload -->

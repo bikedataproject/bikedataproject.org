@@ -15,13 +15,23 @@
         durationMinutes: number | null;
         startTime: string;
         endTime: string | null;
+        privacyLevel: string | null;
         track: number[][];
     };
+
+    type PrivacyOption = { value: string | null; label: string };
+    const privacyOptions: PrivacyOption[] = [
+        { value: null, label: "Account" },
+        { value: "open", label: "Open" },
+        { value: "partners", label: "Partners only" },
+        { value: "anonymised", label: "Anonymised" }
+    ];
 
     let { data } = $props();
     let contribution: ContributionDetail | null = $state(null);
     let loading = $state(true);
     let error: string | null = $state(null);
+    let privacySaving = $state(false);
     let mapContainer: HTMLDivElement;
 
     onMount(async () => {
@@ -116,6 +126,32 @@
         });
     }
 
+    async function saveActivityPrivacy(level: string | null) {
+        if (!contribution) return;
+        privacySaving = true;
+        try {
+            const user = await appManager.authenticator.getUserIdOrRedirect();
+            if (!user) return;
+            const res = await fetch(
+                `${appManager.settings.api_url}/api/contributions/${contribution.id}/privacy`,
+                {
+                    method: "PUT",
+                    headers: {
+                        Authorization: "Bearer " + user.access_token,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ privacyLevel: level })
+                }
+            );
+            if (res.ok) {
+                const data = await res.json();
+                contribution.privacyLevel = data.privacyLevel ?? null;
+            }
+        } finally {
+            privacySaving = false;
+        }
+    }
+
     function formatDuration(minutes: number | null): string {
         if (minutes === null) return "\u2014";
         if (minutes < 60) return `${Math.round(minutes)} min`;
@@ -169,6 +205,21 @@
                     <div class="p-4 rounded-xl border border-gray-200 bg-gray-50">
                         <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Provider</p>
                         <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-600">{contribution.provider}</span>
+                    </div>
+                </div>
+
+                <div class="mb-6 p-4 rounded-xl border border-gray-200 bg-gray-50">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="text-sm text-gray-600">Data sharing level:</span>
+                        <div class="inline-flex">
+                            {#each privacyOptions as opt, i}
+                                <button
+                                    disabled={privacySaving}
+                                    onclick={() => saveActivityPrivacy(opt.value)}
+                                    class="text-sm px-3 py-1.5 border transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed {i === 0 ? 'rounded-l-lg' : ''} {i === privacyOptions.length - 1 ? 'rounded-r-lg' : ''} {i > 0 ? '-ml-px' : ''} {contribution.privacyLevel === opt.value ? 'border-primary bg-primary text-white font-semibold z-10 relative' : 'border-gray-200 bg-white text-gray-600 hover:border-primary'}"
+                                >{opt.label}</button>
+                            {/each}
+                        </div>
                     </div>
                 </div>
 
