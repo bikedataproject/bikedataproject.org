@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
     import PrivatePage from "$lib/auth/PrivatePage.svelte";
     import NavBar from "$lib/home/NavBar.svelte";
     import Footer from "$lib/home/Footer.svelte";
@@ -202,7 +203,10 @@
                                 </thead>
                                 <tbody>
                                     {#each contributions as c (c.id)}
-                                        <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
+                                        <tr
+                                            class="border-t border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
+                                            onclick={() => goto(`/share-data/${c.id}`)}
+                                        >
                                             <td class="px-4 py-3 text-gray-800 whitespace-nowrap">{formatDate(c.startTime)}</td>
                                             <td class="px-4 py-3 text-gray-700">{formatDistance(c.distanceKm)}</td>
                                             <td class="px-4 py-3 text-gray-700">{formatDuration(c.durationMinutes)}</td>
