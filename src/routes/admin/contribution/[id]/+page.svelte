@@ -7,6 +7,21 @@
     import Footer from "$lib/home/Footer.svelte";
     import { appManager } from "$lib/AppManager";
 
+    type MapMatchSegment = {
+        edgeGlobalId: string;
+        forward: boolean;
+        attributes: Record<string, string> | null;
+        geometry: number[][];
+    };
+
+    type MapMatchData = {
+        status: string;
+        createdAt: string;
+        completedAt: string | null;
+        attempts: number;
+        segments: MapMatchSegment[];
+    };
+
     type ContributionDetail = {
         id: string;
         userId: string;
@@ -19,6 +34,7 @@
         endTime: string | null;
         privacyLevel: string | null;
         track: number[][];
+        mapMatch: MapMatchData | null;
     };
 
     let { data } = $props();
@@ -58,11 +74,11 @@
         await tick();
 
         if (contribution && contribution.track.length >= 2) {
-            initMap(contribution.track);
+            initMap(contribution.track, contribution.mapMatch);
         }
     });
 
-    function initMap(track: number[][]) {
+    function initMap(track: number[][], mapMatch: MapMatchData | null) {
         let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
         for (const coord of track) {
             if (coord[0] < minLng) minLng = coord[0];
@@ -95,8 +111,38 @@
                 type: "line",
                 source: "route",
                 layout: { "line-join": "round", "line-cap": "round" },
-                paint: { "line-color": "#ef4823", "line-width": 4 }
+                paint: { "line-color": "#ef4823", "line-width": 4, "line-opacity": 0.5 }
             });
+
+            // Add matched route segments
+            if (mapMatch && mapMatch.segments.length > 0) {
+                const features = mapMatch.segments.map((seg, i) => ({
+                    type: "Feature" as const,
+                    properties: {
+                        index: i,
+                        forward: seg.forward,
+                        edgeGlobalId: seg.edgeGlobalId,
+                        ...seg.attributes
+                    },
+                    geometry: {
+                        type: "LineString" as const,
+                        coordinates: seg.geometry
+                    }
+                }));
+
+                map.addSource("matched-route", {
+                    type: "geojson",
+                    data: { type: "FeatureCollection", features }
+                });
+
+                map.addLayer({
+                    id: "matched-route-line",
+                    type: "line",
+                    source: "matched-route",
+                    layout: { "line-join": "round", "line-cap": "round" },
+                    paint: { "line-color": "#2563eb", "line-width": 4 }
+                });
+            }
 
             new maplibregl.Marker({ color: "#22c55e" })
                 .setLngLat(track[0] as [number, number])
@@ -145,7 +191,7 @@
             {:else if contribution}
                 <h2 class="mb-1">Contribution</h2>
 
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div class="p-4 rounded-xl border border-gray-200 bg-gray-50">
                         <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">User</p>
                         <p class="text-sm font-semibold text-gray-800" title={contribution.userId}>{contribution.username ?? contribution.email ?? contribution.userId.substring(0, 8) + "\u2026"}</p>
@@ -166,6 +212,18 @@
                         <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Provider</p>
                         <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-600">{contribution.provider}</span>
                     </div>
+                    <div class="p-4 rounded-xl border border-gray-200 bg-gray-50">
+                        <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Map Match</p>
+                        {#if contribution.mapMatch}
+                            <span class="text-xs px-2 py-0.5 rounded-full border {contribution.mapMatch.status === 'completed' ? 'bg-green-50 border-green-200 text-green-700' : contribution.mapMatch.status === 'error' ? 'bg-red-50 border-red-200 text-red-700' : contribution.mapMatch.status === 'processing' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-gray-50 border-gray-200 text-gray-500'}">{contribution.mapMatch.status}</span>
+                        {:else}
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-gray-50 border border-gray-200 text-gray-500">pending</span>
+                        {/if}
+                    </div>
+                    <div class="p-4 rounded-xl border border-gray-200 bg-gray-50">
+                        <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Segments</p>
+                        <p class="text-sm font-semibold text-gray-800">{contribution.mapMatch?.segments.length ?? 0}</p>
+                    </div>
                 </div>
 
                 <div class="mb-6 p-4 rounded-xl border border-gray-200 bg-gray-50">
@@ -180,6 +238,12 @@
                         bind:this={mapContainer}
                         class="w-full h-[500px] rounded-xl border border-gray-200 overflow-hidden"
                     ></div>
+                    <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                        <span class="flex items-center gap-1.5"><span class="inline-block w-4 h-0.5 bg-[#ef4823] opacity-50"></span> GPS track</span>
+                        {#if contribution.mapMatch && contribution.mapMatch.segments.length > 0}
+                            <span class="flex items-center gap-1.5"><span class="inline-block w-4 h-0.5 bg-[#2563eb]"></span> Matched route</span>
+                        {/if}
+                    </div>
                 {:else}
                     <p class="text-gray-500 text-sm">No GPS track available for this contribution.</p>
                 {/if}

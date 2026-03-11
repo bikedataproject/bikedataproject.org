@@ -7,7 +7,7 @@
     import { appManager } from "$lib/AppManager";
 
     type AdminUser = { userId: string; username: string | null; email: string | null; contributionCount: number; totalDistanceKm: number; lastContribution: string; privacyLevel: string | null };
-    type AdminContribution = { id: string; userId: string; username: string | null; provider: string; distanceKm: number | null; durationMinutes: number | null; startTime: string; privacyLevel: string | null };
+    type AdminContribution = { id: string; userId: string; username: string | null; provider: string; distanceKm: number | null; durationMinutes: number | null; startTime: string; privacyLevel: string | null; mapMatchStatus: string };
 
     let accessDenied = $state(false);
 
@@ -185,6 +185,7 @@
                                         <th class="px-4 py-3">Distance</th>
                                         <th class="px-4 py-3">Duration</th>
                                         <th class="px-4 py-3">Provider</th>
+                                        <th class="px-4 py-3">Match</th>
                                         <th class="px-4 py-3">Privacy</th>
                                     </tr>
                                 </thead>
@@ -197,6 +198,9 @@
                                             <td class="px-4 py-3 text-gray-700">{formatDuration(c.durationMinutes)}</td>
                                             <td class="px-4 py-3">
                                                 <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-600">{c.provider}</span>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <span class="text-xs px-2 py-0.5 rounded-full {c.mapMatchStatus === 'completed' ? 'bg-green-50 border-green-200 text-green-700' : c.mapMatchStatus === 'error' ? 'bg-red-50 border-red-200 text-red-700' : c.mapMatchStatus === 'processing' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-gray-50 border-gray-200 text-gray-500'} border">{c.mapMatchStatus}</span>
                                             </td>
                                             <td class="px-4 py-3">
                                                 <span class="text-xs px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-600">{c.privacyLevel ?? "account"}</span>
