@@ -192,6 +192,29 @@
         const d = new Date(iso);
         return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
     }
+
+    function downloadGpx() {
+        if (!contribution || contribution.track.length < 2) return;
+        const trkpts = contribution.track
+            .map(c => `      <trkpt lat="${c[1]}" lon="${c[0]}">${c[2] !== undefined ? `<ele>${c[2]}</ele>` : ""}</trkpt>`)
+            .join("\n");
+        const gpx = `<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="BikeDataProject">
+  <trk>
+    <name>Contribution ${contribution.id}</name>
+    <trkseg>
+${trkpts}
+    </trkseg>
+  </trk>
+</gpx>`;
+        const blob = new Blob([gpx], { type: "application/gpx+xml" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `contribution-${contribution.id}.gpx`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
 </script>
 
 <PrivatePage>
@@ -255,7 +278,16 @@
                     <p class="text-gray-500 text-sm">No GPS track available for this contribution.</p>
                 {/if}
 
-                <div class="mt-6 flex justify-end">
+                <div class="mt-6 flex justify-end gap-3">
+                    <button
+                        onclick={downloadGpx}
+                        class="text-sm px-4 py-2 text-gray-700 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer inline-flex items-center gap-2"
+                    >
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                        </svg>
+                        Download GPX
+                    </button>
                     <button
                         disabled={deleting}
                         onclick={deleteContribution}
