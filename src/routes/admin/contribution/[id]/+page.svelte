@@ -52,15 +52,41 @@
     let loading = $state(true);
     let error: string | null = $state(null);
     let mapContainer: HTMLDivElement;
+    let map: maplibregl.Map | null = null;
+    let mounted = $state(false);
 
-    onMount(async () => {
+    onMount(() => {
+        mounted = true;
+        return () => {
+            map?.remove();
+            map = null;
+        };
+    });
+
+    $effect(() => {
+        const id = data.id;
+        if (!mounted) return;
+        loadContribution(id);
+    });
+
+    async function loadContribution(id: string) {
+        loading = true;
+        error = null;
+        contribution = null;
+
+        // Clean up previous map.
+        if (map) {
+            map.remove();
+            map = null;
+        }
+
         if (!(await appManager.authenticator.isSignedIn())) return;
 
         const user = await appManager.authenticator.getUserIdOrRedirect();
         if (!user) return;
 
         const res = await fetch(
-            `${appManager.settings.api_url}/api/admin/contributions/${data.id}`,
+            `${appManager.settings.api_url}/api/admin/contributions/${id}`,
             { headers: { Authorization: "Bearer " + user.access_token } }
         );
 
@@ -86,7 +112,7 @@
         if (contribution && contribution.track.length >= 2) {
             initMap(contribution.track, contribution.mapMatch);
         }
-    });
+    }
 
     function initMap(track: number[][], mapMatch: MapMatchData | null) {
         let minLng = Infinity, minLat = Infinity, maxLng = -Infinity, maxLat = -Infinity;
@@ -97,7 +123,7 @@
             if (coord[1] > maxLat) maxLat = coord[1];
         }
 
-        const map = new maplibregl.Map({
+        map = new maplibregl.Map({
             container: mapContainer,
             style: "https://api.maptiler.com/maps/67ea3b5b-d4ac-48f3-ad92-6574c2dc9734/style.json?key=OZUCIh4RNx38vXF8gF4H",
             bounds: [[minLng, minLat], [maxLng, maxLat]] as [[number, number], [number, number]],
