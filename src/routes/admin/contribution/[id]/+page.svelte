@@ -43,6 +43,8 @@
         privacyLevel: string | null;
         track: number[][];
         mapMatch: MapMatchData | null;
+        previousId: string | null;
+        nextId: string | null;
     };
 
     let { data } = $props();
@@ -253,7 +255,31 @@ ${trkpts}
             {:else if error}
                 <p class="text-red-600">{error}</p>
             {:else if contribution}
-                <h2 class="mb-1">Contribution</h2>
+                <div class="flex items-center justify-between mb-1">
+                    <h2>Contribution</h2>
+                    <div class="flex items-center gap-2">
+                        <a
+                            href={contribution.previousId ? `/admin/contribution/${contribution.previousId}` : undefined}
+                            class="px-3 py-1.5 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors inline-flex items-center gap-1 {contribution.previousId ? '' : 'opacity-40 pointer-events-none'}"
+                            aria-disabled={!contribution.previousId}
+                        >
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            </svg>
+                            Previous
+                        </a>
+                        <a
+                            href={contribution.nextId ? `/admin/contribution/${contribution.nextId}` : undefined}
+                            class="px-3 py-1.5 text-sm rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors inline-flex items-center gap-1 {contribution.nextId ? '' : 'opacity-40 pointer-events-none'}"
+                            aria-disabled={!contribution.nextId}
+                        >
+                            Next
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div class="p-4 rounded-xl border border-gray-200 bg-gray-50">
