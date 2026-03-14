@@ -97,24 +97,10 @@
         map.addControl(new maplibregl.NavigationControl(), "top-right");
 
         map.on("load", () => {
-            map.addSource("route", {
-                type: "geojson",
-                data: {
-                    type: "Feature",
-                    properties: {},
-                    geometry: { type: "LineString", coordinates: track }
-                }
-            });
+            // Insert above roads/admin borders but below labels.
+            const firstLabelLayer = "poi_label";
 
-            map.addLayer({
-                id: "route-line",
-                type: "line",
-                source: "route",
-                layout: { "line-join": "round", "line-cap": "round" },
-                paint: { "line-color": "#ef4823", "line-width": 4, "line-opacity": 0.5 }
-            });
-
-            // Add matched route segments
+            // Add matched route first (renders behind the track).
             if (mapMatch && mapMatch.segments.length > 0) {
                 const features = mapMatch.segments.map((seg, i) => ({
                     type: "Feature" as const,
@@ -140,9 +126,27 @@
                     type: "line",
                     source: "matched-route",
                     layout: { "line-join": "round", "line-cap": "round" },
-                    paint: { "line-color": "#2563eb", "line-width": 4 }
-                });
+                    paint: { "line-color": "#2563eb", "line-width": 6, "line-opacity": 0.6 }
+                }, firstLabelLayer);
             }
+
+            // Add GPS track on top of matched route but below labels.
+            map.addSource("route", {
+                type: "geojson",
+                data: {
+                    type: "Feature",
+                    properties: {},
+                    geometry: { type: "LineString", coordinates: track }
+                }
+            });
+
+            map.addLayer({
+                id: "route-line",
+                type: "line",
+                source: "route",
+                layout: { "line-join": "round", "line-cap": "round" },
+                paint: { "line-color": "#000000", "line-width": 3, "line-dasharray": [0.5, 2] }
+            }, firstLabelLayer);
 
             new maplibregl.Marker({ color: "#22c55e" })
                 .setLngLat(track[0] as [number, number])
@@ -262,7 +266,7 @@ ${trkpts}
                         class="w-full h-[500px] rounded-xl border border-gray-200 overflow-hidden"
                     ></div>
                     <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
-                        <span class="flex items-center gap-1.5"><span class="inline-block w-4 h-0.5 bg-[#ef4823] opacity-50"></span> GPS track</span>
+                        <span class="flex items-center gap-1.5"><span class="inline-block w-4 border-t-2 border-dotted border-black"></span> GPS track</span>
                         {#if contribution.mapMatch && contribution.mapMatch.segments.length > 0}
                             <span class="flex items-center gap-1.5"><span class="inline-block w-4 h-0.5 bg-[#2563eb]"></span> Matched route</span>
                         {/if}
