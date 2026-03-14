@@ -148,6 +148,35 @@
                 paint: { "line-color": "#000000", "line-width": 3, "line-dasharray": [0.5, 2] }
             }, firstLabelLayer);
 
+            // Create arrow image for direction indicators.
+            const arrowSize = 16;
+            const canvas = document.createElement("canvas");
+            canvas.width = arrowSize;
+            canvas.height = arrowSize;
+            const ctx = canvas.getContext("2d")!;
+            ctx.fillStyle = "#000000";
+            ctx.beginPath();
+            ctx.moveTo(2, 2);
+            ctx.lineTo(arrowSize - 2, arrowSize / 2);
+            ctx.lineTo(2, arrowSize - 2);
+            ctx.closePath();
+            ctx.fill();
+            map.addImage("arrow", { width: arrowSize, height: arrowSize, data: ctx.getImageData(0, 0, arrowSize, arrowSize).data });
+
+            map.addLayer({
+                id: "route-arrows",
+                type: "symbol",
+                source: "route",
+                minzoom: 15,
+                layout: {
+                    "symbol-placement": "line",
+                    "symbol-spacing": 80,
+                    "icon-image": "arrow",
+                    "icon-size": 0.9,
+                    "icon-allow-overlap": true
+                }
+            }, firstLabelLayer);
+
             new maplibregl.Marker({ color: "#22c55e" })
                 .setLngLat(track[0] as [number, number])
                 .addTo(map);
