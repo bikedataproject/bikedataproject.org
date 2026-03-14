@@ -307,7 +307,7 @@ ${trkpts}
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="grid grid-cols-4 md:grid-cols-8 gap-4 mb-6">
                     <div class="p-4 rounded-xl border border-gray-200 bg-gray-50">
                         <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">User</p>
                         <p class="text-sm font-semibold text-gray-800" title={contribution.userId}>{contribution.username ?? contribution.email ?? contribution.userId.substring(0, 8) + "\u2026"}</p>
