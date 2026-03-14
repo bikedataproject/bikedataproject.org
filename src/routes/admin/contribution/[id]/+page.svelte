@@ -14,11 +14,19 @@
         geometry: number[][];
     };
 
+    type MapMatchPath = {
+        index: number;
+        fromOffset: number;
+        toOffset: number;
+        segments: MapMatchSegment[];
+    };
+
     type MapMatchData = {
         status: string;
         createdAt: string;
         completedAt: string | null;
         attempts: number;
+        paths: MapMatchPath[];
         segments: MapMatchSegment[];
     };
 
@@ -277,8 +285,12 @@ ${trkpts}
                         {/if}
                     </div>
                     <div class="p-4 rounded-xl border border-gray-200 bg-gray-50">
+                        <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Paths</p>
+                        <p class="text-sm font-semibold text-gray-800">{contribution.mapMatch?.paths?.length ?? 0}</p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-gray-200 bg-gray-50">
                         <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Segments</p>
-                        <p class="text-sm font-semibold text-gray-800">{contribution.mapMatch?.segments.length ?? 0}</p>
+                        <p class="text-sm font-semibold text-gray-800">{contribution.mapMatch?.segments?.length ?? 0}</p>
                     </div>
                 </div>
 
