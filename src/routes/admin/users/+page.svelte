@@ -112,7 +112,7 @@
                         </thead>
                         <tbody>
                             {#each users as u (u.userId)}
-                                <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors">
+                                <tr class="border-t border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer" onclick={() => goto(`/admin/user/${u.userId}`)}>
                                     <td class="px-4 py-3 text-gray-800" title={u.userId}>{u.username ?? u.email ?? shortId(u.userId)}</td>
                                     <td class="px-4 py-3 text-gray-700">{u.contributionCount}</td>
                                     <td class="px-4 py-3 text-gray-700">{formatDistance(u.totalDistanceKm)}</td>
