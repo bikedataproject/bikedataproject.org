@@ -65,6 +65,10 @@
                             {/if}
                         </p>
                     </a>
+                    <a href="/admin/od-matrix" class="block p-6 rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all">
+                        <h3 class="text-lg font-bold text-gray-800">OD Matrix</h3>
+                        <p class="text-sm text-gray-500 mt-1">Select hex cells & explore flows</p>
+                    </a>
                 </div>
             {/if}
         </section>

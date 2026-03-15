@@ -16,6 +16,8 @@
     const limit = 25;
 
     let offset = $derived(parseInt($page.url.searchParams.get("offset") ?? "0", 10) || 0);
+    let matchStatusFilter = $derived($page.url.searchParams.get("matchStatus") ?? "");
+    let sortBy = $derived($page.url.searchParams.get("sort") ?? "");
     let initialized = $state(false);
 
     onMount(async () => {
@@ -25,8 +27,10 @@
     });
 
     $effect(() => {
-        // Re-fetch when offset changes via URL (skip initial mount)
+        // Re-fetch when offset, filter or sort changes via URL (skip initial mount)
         offset;
+        matchStatusFilter;
+        sortBy;
         if (initialized) loadContributions();
     });
 
@@ -40,10 +44,10 @@
         try {
             const token = await getToken();
             if (!token) return;
-            const res = await fetch(
-                `${appManager.settings.api_url}/api/admin/contributions?offset=${offset}&limit=${limit}`,
-                { headers: { Authorization: "Bearer " + token } }
-            );
+            let url = `${appManager.settings.api_url}/api/admin/contributions?offset=${offset}&limit=${limit}`;
+            if (matchStatusFilter) url += `&matchStatus=${matchStatusFilter}`;
+            if (sortBy) url += `&sort=${sortBy}`;
+            const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
             if (res.status === 403) {
                 accessDenied = true;
                 return;
@@ -64,6 +68,28 @@
             url.searchParams.delete("offset");
         } else {
             url.searchParams.set("offset", String(newOffset));
+        }
+        goto(url.toString(), { replaceState: false, noScroll: true });
+    }
+
+    function setFilter(status: string) {
+        const url = new URL($page.url);
+        url.searchParams.delete("offset");
+        if (status) {
+            url.searchParams.set("matchStatus", status);
+        } else {
+            url.searchParams.delete("matchStatus");
+        }
+        goto(url.toString(), { replaceState: false, noScroll: true });
+    }
+
+    function setSort(sort: string) {
+        const url = new URL($page.url);
+        url.searchParams.delete("offset");
+        if (sort) {
+            url.searchParams.set("sort", sort);
+        } else {
+            url.searchParams.delete("sort");
         }
         goto(url.toString(), { replaceState: false, noScroll: true });
     }
@@ -98,7 +124,28 @@
             <div class="flex items-center gap-3 mb-4">
                 <a href="/admin" class="text-sm text-gray-500 hover:text-gray-800 transition-colors">&larr; Admin</a>
             </div>
-            <h2 class="mb-4">Contributions ({total})</h2>
+            <h2 class="mb-4">Contributions ({total.toLocaleString()})</h2>
+
+            <div class="flex flex-wrap items-center gap-3 mb-4">
+                <div class="flex items-center gap-2">
+                    <label for="matchFilter" class="text-sm text-gray-600">Match status:</label>
+                    <select id="matchFilter" value={matchStatusFilter} onchange={(e) => setFilter((e.target as HTMLSelectElement).value)} class="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white">
+                        <option value="">All</option>
+                        <option value="completed">Completed</option>
+                        <option value="error">Error</option>
+                        <option value="processing">Processing</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <label for="sortBy" class="text-sm text-gray-600">Sort by:</label>
+                    <select id="sortBy" value={sortBy} onchange={(e) => setSort((e.target as HTMLSelectElement).value)} class="text-sm border border-gray-200 rounded-lg px-2 py-1.5 bg-white">
+                        <option value="">Activity date</option>
+                        <option value="match-date">Match date</option>
+                    </select>
+                </div>
+            </div>
 
             {#if accessDenied}
                 <div class="p-6 rounded-xl border-2 border-red-200 bg-red-50">
